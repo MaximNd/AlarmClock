@@ -119,7 +119,7 @@ namespace AlarmClock.ViewModels.Authentication
                 return;
             }
             StationManager.CurrentUser = currentUser;
-            NavigationManager.Instance.Navigate(ModesEnum.Main);
+            // TODO Navigate to next page
         }
 
         private bool SignInCanExecute(object obj)
