@@ -55,6 +55,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Managers\DBManager.cs" />
+    <Compile Include="Managers\NavigationManager.cs" />
+    <Compile Include="Managers\StationManager.cs" />
+    <Compile Include="Models\AlarmClock.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Tools\Controls\LabelAndPasswordControl.xaml.cs">
+      <DependentUpon>LabelAndPasswordControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Controls\LabelAndTextControl.xaml.cs">
+      <DependentUpon>LabelAndTextControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Encrypting.cs" />
+    <Compile Include="Tools\IContentWindow.cs" />
+    <Compile Include="Tools\NavigationModel.cs" />
+    <Compile Include="Tools\PasswordBoxAssistant.cs" />
+    <Compile Include="Tools\RelayCommand.cs" />
+    <Compile Include="ViewModels\Authentication\SignInViewModel.cs" />
+    <Compile Include="Views\Authentication\SignInView.xaml.cs">
+      <DependentUpon>SignInView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -67,8 +87,21 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Tools\Controls\LabelAndPasswordControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tools\Controls\LabelAndTextControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Authentication\SignInView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,5 +127,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -12,27 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using AlarmClock.Managers;
-using AlarmClock.Tools;
+using AlarmClock.ViewModels.Authentication;
 
-namespace AlarmClock
+namespace AlarmClock.Views.Authentication
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SignInView.xaml
     /// </summary>
-    public partial class MainWindow : IContentWindow
+    internal partial class SignInView
     {
-        public MainWindow()
+        #region Constructor
+        internal SignInView()
         {
             InitializeComponent();
-            var navigationModel = new NavigationModel(this);
-            NavigationManager.Instance.Initialize(navigationModel);
-            navigationModel.Navigate(ModesEnum.SignIn);
+            var signInViewModel = new SignInViewModel();
+            DataContext = signInViewModel;
         }
-
-        public ContentControl ContentControl
-        {
-            get { return _contentControl; }
-        }
+        #endregion
     }
 }
