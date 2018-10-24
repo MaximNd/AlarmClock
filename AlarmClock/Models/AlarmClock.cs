@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AlarmClock.Models
 {
-    class AlarmClock
+    public class AlarmClock
     {
         #region Fields
         private Guid _guid;
