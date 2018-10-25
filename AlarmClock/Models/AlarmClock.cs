@@ -35,14 +35,14 @@ namespace AlarmClock.Models
         #endregion
 
         #region Constructor
-        public AlarmClock(Guid guid, DateTime lastTriggerDate, DateTime nextTriggerDate)
+        public AlarmClock(DateTime lastTriggerDate, DateTime nextTriggerDate)
         {
             _guid = Guid.NewGuid();
             _lastTriggerDate = lastTriggerDate;
             _nextTriggerDate = nextTriggerDate;
         }
 
-        private AlarmClock()
+        public AlarmClock()
         {
         }
 
