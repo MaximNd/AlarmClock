@@ -87,8 +87,8 @@ namespace AlarmClock.ViewModels.AlarmClocks
         #endregion
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            if (propertyChangedEventArgs.PropertyName == "SelectedAlarmClock")
-                OnAlarmClockChanged(_selectedAlarmClock);
+            if (propertyChangedEventArgs.PropertyName == nameof(SelectedAlarmClock) || propertyChangedEventArgs.PropertyName == nameof(_selectedAlarmClock))
+                OnAlarmClockChanged(SelectedAlarmClock);
         }
         private void FillAlarmClocks()
         {

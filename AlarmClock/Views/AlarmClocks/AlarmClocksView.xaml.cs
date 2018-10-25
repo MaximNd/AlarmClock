@@ -45,9 +45,14 @@ namespace AlarmClock.Views.AlarmClocks
                 Grid.SetRowSpan(_currentAlarmClockView, 2);
                 Grid.SetColumn(_currentAlarmClockView, 1);
             }
-            else
-                _currentAlarmClockView.DataContext = new AlarmClockViewModel(alarmClock);
+            AlarmClockViewModel alarmClockViewModel = new AlarmClockViewModel(alarmClock);
+            _currentAlarmClockView.DataContext = alarmClockViewModel;
+            alarmClockViewModel.AlarmClockTimeUpdated += OnAlarmClockTimeUpdated;
+        }
 
+        private void OnAlarmClockTimeUpdated(Models.AlarmClock updatedAlarmClock)
+        {
+            alarmClocksList.Items.Refresh();
         }
     }
 }

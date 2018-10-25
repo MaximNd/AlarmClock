@@ -21,7 +21,7 @@
             <Button Width="200" Content="Add Alarm Clock" Command="{ Binding AddAlarmClockCommand }"/>
             <Button Width="200" Content="Delete Alarm Clock" Command="{ Binding DeleteAlarmClockCommand }"/>
         </StackPanel>
-        <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding AlarmClocks}" SelectedItem="{Binding SelectedAlarmClock}" Name="alarmClocksList" ScrollViewer.VerticalScrollBarVisibility="Visible"  Height="Auto">
+        <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding AlarmClocks, Mode=OneWay}" SelectedItem="{Binding SelectedAlarmClock}" x:Name="alarmClocksList" ScrollViewer.VerticalScrollBarVisibility="Visible"  Height="Auto">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=LastTriggerDate}">Час останнього спрацювання</GridViewColumn>

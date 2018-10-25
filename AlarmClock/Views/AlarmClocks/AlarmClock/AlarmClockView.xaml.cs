@@ -24,8 +24,6 @@ namespace AlarmClock.Views.AlarmClocks.AlarmClock
         public AlarmClockView(Models.AlarmClock alarmClock)
         {
             InitializeComponent();
-            var alarmClockModel = new AlarmClockViewModel(alarmClock);
-            DataContext = alarmClockModel;
         }
     }
 }
