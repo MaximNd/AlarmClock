@@ -72,8 +72,16 @@
     <Compile Include="Tools\NavigationModel.cs" />
     <Compile Include="Tools\PasswordBoxAssistant.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
+    <Compile Include="ViewModels\AlarmClocks\AlarmClocksViewModel.cs" />
+    <Compile Include="ViewModels\AlarmClocks\AlarmClock\AlarmClockViewModel.cs" />
     <Compile Include="ViewModels\Authentication\SignInViewModel.cs" />
     <Compile Include="ViewModels\Authentication\SignUpViewModel.cs" />
+    <Compile Include="Views\AlarmClocks\AlarmClocksView.xaml.cs">
+      <DependentUpon>AlarmClocksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AlarmClocks\AlarmClock\AlarmClockView.xaml.cs">
+      <DependentUpon>AlarmClockView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Authentication\SignInView.xaml.cs">
       <DependentUpon>SignInView.xaml</DependentUpon>
     </Compile>
@@ -97,6 +105,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tools\Controls\LabelAndTextControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AlarmClocks\AlarmClocksView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AlarmClocks\AlarmClock\AlarmClockView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="AlarmClock.Views.AlarmClocks.AlarmClocksView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlarmClock.Views.AlarmClocks"
+             xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
+             xmlns:models="clr-namespace:AlarmClock.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid x:Name="AlarmClocksGrid" Background="Lavender" Height="Auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Horizontal">
+            <Button Width="200" Content="Add Alarm Clock" Command="{ Binding AddAlarmClockCommand }"/>
+            <Button Width="200" Content="Delete Alarm Clock" Command="{ Binding DeleteAlarmClockCommand }"/>
+        </StackPanel>
+        <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding AlarmClocks}" SelectedItem="{Binding SelectedAlarmClock}" Name="alarmClocksList" ScrollViewer.VerticalScrollBarVisibility="Visible"  Height="Auto">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=LastTriggerDate}">Час останнього спрацювання</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=NextTriggerDate}">Час наступного спрацювання</GridViewColumn>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="{Binding Path=LastTriggerDate}" HorizontalAlignment="Center" />
+                        <TextBlock FontSize="16" Text="{Binding Path=NextTriggerDate}" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

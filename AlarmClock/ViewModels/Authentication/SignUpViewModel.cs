@@ -144,7 +144,7 @@ namespace AlarmClock.ViewModels.Authentication
                 return;
             }
             MessageBox.Show(String.Format(Resources.SignUp_UserSuccessfulyCreated, _login));
-            // TODO Navigate to next page
+            NavigationManager.Instance.Navigate(ModesEnum.AlarmsClocks);
         }
         private bool SignUpCanExecute(object obj)
         {
