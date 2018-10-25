@@ -35,10 +35,11 @@ namespace AlarmClock.ViewModels.AlarmClocks
             {
                 return _addAlarmClockCommand ?? (_addAlarmClockCommand = new RelayCommand<object>((object o) =>
                 {
-                    Models.AlarmClock alarmClock = new Models.AlarmClock(new DateTime(), new DateTime());
+                    DateTime today = DateTime.Today;
+                    Models.AlarmClock alarmClock = new Models.AlarmClock(null, new DateTime(today.Year, today.Month, today.Day+1, 0, 0, 0));
                     StationManager.CurrentUser.AlarmClocks.Add(alarmClock);
-                    _alarmClocks.Add(alarmClock);
-                    _selectedAlarmClock = alarmClock;
+                    AlarmClocks.Add(alarmClock);
+                    SelectedAlarmClock = alarmClock;
                 }));
             }
         }

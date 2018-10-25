@@ -10,7 +10,7 @@ namespace AlarmClock.Models
     {
         #region Fields
         private Guid _guid;
-        private DateTime _lastTriggerDate;
+        private DateTime? _lastTriggerDate;
         private DateTime _nextTriggerDate;
         #endregion
 
@@ -21,7 +21,7 @@ namespace AlarmClock.Models
             set { _guid = value; }
         }
 
-        public DateTime LastTriggerDate
+        public DateTime? LastTriggerDate
         {
             get { return _lastTriggerDate; }
             set { _lastTriggerDate = value; }
@@ -35,7 +35,7 @@ namespace AlarmClock.Models
         #endregion
 
         #region Constructor
-        public AlarmClock(DateTime lastTriggerDate, DateTime nextTriggerDate)
+        public AlarmClock(DateTime? lastTriggerDate, DateTime nextTriggerDate)
         {
             _guid = Guid.NewGuid();
             _lastTriggerDate = lastTriggerDate;
