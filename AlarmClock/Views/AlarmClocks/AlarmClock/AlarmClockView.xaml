@@ -13,6 +13,8 @@
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"></ColumnDefinition>
@@ -28,5 +30,6 @@
         <ComboBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="2" Grid.Column="3" ItemsSource="{Binding Minutes}" SelectedItem="{Binding SelectedMinute}">
         </ComboBox>
         <Button Command="{ Binding SaveNewTime }" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Content="Save"></Button>
+        <Button Command="{ Binding TestAlarm }" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Content="TestAlarm"></Button>
     </Grid>
 </UserControl>

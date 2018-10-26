@@ -19,10 +19,12 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         private Models.AlarmClock _currentAlarmClock;
         private string _selectedHour;
         private string _selectedMinute;
+        private bool _isAlarming;
         private List<string> _hours = new List<string>();
         private List<string> _minutes = new List<string>();
         #region Commands
         private ICommand _saveNewTime;
+        private ICommand _testAlarm;
         #endregion
         #endregion
 
@@ -46,6 +48,26 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                 }));
             }
         }
+
+        public ICommand TestAlarm
+        {
+            get
+            {
+                return _testAlarm ?? (_testAlarm = new RelayCommand<object>((object o) =>
+                {
+                    int currentNextYear = _currentAlarmClock.NextTriggerDate.Year;
+                    int currentNextMonth = _currentAlarmClock.NextTriggerDate.Month;
+                    int currentNextDay = _currentAlarmClock.NextTriggerDate.Day;
+                    int updatedNextHour = Int32.Parse(SelectedHour);
+                    int updatedNexMinute = Int32.Parse(SelectedMinute);
+                    Visibility = "Visible";
+                    _currentAlarmClock.LastTriggerDate = DateTime.Now;
+                    OnPropertyChanged(nameof(_currentAlarmClock));
+                    OnAlarmClockTimeUpdated(_currentAlarmClock);
+                }));
+            }
+        }
+
         #endregion
         public List<string> Hours
         {
@@ -58,6 +80,12 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             get { return _minutes; }
             private set { _minutes = value; }
         }
+
+        /*public string IsAlarming
+        {
+            get { return _visibility; }
+            private set { _visibility = value; }
+        }*/
 
         public string SelectedHour
         {
@@ -95,6 +123,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             int minute = _currentAlarmClock.NextTriggerDate.Minute;
             _selectedHour = hour < 10 ? $"0{hour}" : $"{hour}";
             _selectedMinute = minute < 10 ? $"0{minute}" : $"{minute}";
+            Visibility = "Hidden";
         }
 
         private void GenerateHours()
