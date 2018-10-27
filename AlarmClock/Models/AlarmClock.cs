@@ -12,6 +12,7 @@ namespace AlarmClock.Models
         private Guid _guid;
         private DateTime? _lastTriggerDate;
         private DateTime _nextTriggerDate;
+        private bool _isAlarming;
         #endregion
 
         #region Fields
@@ -32,6 +33,12 @@ namespace AlarmClock.Models
             get { return _nextTriggerDate; }
             set { _nextTriggerDate = value; }
         }
+
+        public bool IsAlarming
+        {
+            get { return _isAlarming; }
+            set { _isAlarming = value; }
+        }
         #endregion
 
         #region Constructor
@@ -40,6 +47,7 @@ namespace AlarmClock.Models
             _guid = Guid.NewGuid();
             _lastTriggerDate = lastTriggerDate;
             _nextTriggerDate = nextTriggerDate;
+            _isAlarming = false;
         }
 
         public AlarmClock()

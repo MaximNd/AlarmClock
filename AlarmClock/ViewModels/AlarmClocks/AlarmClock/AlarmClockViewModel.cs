@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
@@ -19,12 +20,12 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         private Models.AlarmClock _currentAlarmClock;
         private string _selectedHour;
         private string _selectedMinute;
-        private bool _isAlarming;
         private List<string> _hours = new List<string>();
         private List<string> _minutes = new List<string>();
         #region Commands
         private ICommand _saveNewTime;
         private ICommand _testAlarm;
+        private ICommand _snooze;
         #endregion
         #endregion
 
@@ -60,10 +61,22 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                     int currentNextDay = _currentAlarmClock.NextTriggerDate.Day;
                     int updatedNextHour = Int32.Parse(SelectedHour);
                     int updatedNexMinute = Int32.Parse(SelectedMinute);
-                    Visibility = "Visible";
+                    IsAlarming = true;
                     _currentAlarmClock.LastTriggerDate = DateTime.Now;
                     OnPropertyChanged(nameof(_currentAlarmClock));
                     OnAlarmClockTimeUpdated(_currentAlarmClock);
+                }));
+            }
+        }
+
+        public ICommand Snooze
+        {
+            get
+            {
+                return _snooze ?? (_snooze = new RelayCommand<object>((object o) =>
+                {
+                    IsAlarming = false;
+                    OnPropertyChanged(nameof(_currentAlarmClock));
                 }));
             }
         }
@@ -81,12 +94,6 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             private set { _minutes = value; }
         }
 
-        /*public string IsAlarming
-        {
-            get { return _visibility; }
-            private set { _visibility = value; }
-        }*/
-
         public string SelectedHour
         {
             get { return _selectedHour; }
@@ -102,6 +109,15 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             set
             {
                 _selectedMinute = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsAlarming
+        {
+            get { return _currentAlarmClock.IsAlarming; }
+            set
+            {
+                _currentAlarmClock.IsAlarming = value;
                 OnPropertyChanged();
             }
         }
@@ -123,7 +139,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             int minute = _currentAlarmClock.NextTriggerDate.Minute;
             _selectedHour = hour < 10 ? $"0{hour}" : $"{hour}";
             _selectedMinute = minute < 10 ? $"0{minute}" : $"{minute}";
-            Visibility = "Hidden";
+            IsAlarming = false;
         }
 
         private void GenerateHours()
@@ -162,5 +178,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         }
         #endregion
         #endregion
-    }
+
+        }
+    
 }

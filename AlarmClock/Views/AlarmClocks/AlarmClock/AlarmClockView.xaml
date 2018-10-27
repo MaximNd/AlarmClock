@@ -3,15 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Tools="clr-namespace:AlarmClock.Tools"
              xmlns:local="clr-namespace:AlarmClock.Views.AlarmClocks.AlarmClock"
+             xmlns:models="clr-namespace:AlarmClock.Models"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="Converter" />
+        <Tools:InverseBooleanConverter x:Key="InverseConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
@@ -30,6 +37,8 @@
         <ComboBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="2" Grid.Column="3" ItemsSource="{Binding Minutes}" SelectedItem="{Binding SelectedMinute}">
         </ComboBox>
         <Button Command="{ Binding SaveNewTime }" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Content="Save"></Button>
-        <Button Command="{ Binding TestAlarm }" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Content="TestAlarm"></Button>
+        <Button Command="{ Binding TestAlarm }" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Content="TestAlarm" Visibility="{Binding Path=IsAlarming, Converter={StaticResource InverseConverter}}"></Button>
+        <Button Command="{ Binding Snooze }" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Content="Snooze" Visibility="{Binding Path=IsAlarming, Converter={StaticResource Converter}}"></Button>
+        <Label Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Content="Дзінь-Дзінь-Дзінь" HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding Path=IsAlarming, Converter={StaticResource Converter}}"></Label>
     </Grid>
 </UserControl>
