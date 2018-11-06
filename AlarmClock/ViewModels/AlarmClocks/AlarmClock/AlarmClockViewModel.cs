@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using AlarmClock.Managers;
+using AlarmClock.Models;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
 
@@ -18,7 +19,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
     class AlarmClockViewModel : INotifyPropertyChanged
     {
         #region Fields
-        private Models.AlarmClock _currentAlarmClock;
+        private AlarmClockForView _currentAlarmClock;
         private string _selectedHour;
         private string _selectedMinute;
         private bool _isClockPresent;
@@ -55,7 +56,6 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                     }
                     _currentAlarmClock.NextTriggerDate = dateTime;
                     OnPropertyChanged(nameof(_currentAlarmClock));
-                    OnAlarmClockTimeUpdated(_currentAlarmClock);
                 }));
             }
         }
@@ -74,7 +74,6 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                     IsAlarming = true;
                     _currentAlarmClock.LastTriggerDate = DateTime.Now;
                     OnPropertyChanged(nameof(_currentAlarmClock));
-                    OnAlarmClockTimeUpdated(_currentAlarmClock);
                 }));
             }
         }
@@ -147,7 +146,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         #endregion
 
         #region Constructor
-        public AlarmClockViewModel(Models.AlarmClock alarmClock)
+        public AlarmClockViewModel(AlarmClockForView alarmClock)
         {
             if(alarmClock == null)
             {
@@ -190,14 +189,6 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         }
 
         #region EventsAndHandlers
-        internal event AlarmClockTimeUpdatedHandler AlarmClockTimeUpdated;
-        internal delegate void AlarmClockTimeUpdatedHandler(Models.AlarmClock alarmClock);
-
-        internal virtual void OnAlarmClockTimeUpdated(Models.AlarmClock alarmClock)
-        {
-            AlarmClockTimeUpdated?.Invoke(alarmClock);
-        }
-
         #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
@@ -207,7 +198,6 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         }
         #endregion
         #endregion
-
         }
     
 }

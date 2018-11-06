@@ -36,6 +36,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <alarmClock:AlarmClockView x:Name="AlarmClockView" Visibility="{ Binding AlarmClockVisibility }" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" />
+        <alarmClock:AlarmClockView x:Name="AlarmClockView" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" />
     </Grid>
 </UserControl>

@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using AlarmClock.Managers;
+using AlarmClock.Models;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
 
@@ -18,8 +19,8 @@ namespace AlarmClock.ViewModels.AlarmClocks
     class AlarmClocksViewModel : INotifyPropertyChanged
     {
         #region Fields
-        private Models.AlarmClock _selectedAlarmClock;
-        private ObservableCollection<Models.AlarmClock> _alarmClocks;
+        private AlarmClockForView _selectedAlarmClock;
+        private ObservableCollection<AlarmClockForView> _alarmClocks = new ObservableCollection<AlarmClockForView>();
         #region Commands
         private ICommand _addAlarmClockCommand;
         private ICommand _deleteAlarmClockCommand;
@@ -36,8 +37,8 @@ namespace AlarmClock.ViewModels.AlarmClocks
                 return _addAlarmClockCommand ?? (_addAlarmClockCommand = new RelayCommand<object>((object o) =>
                 {
                     DateTime today = DateTime.Today;
-                    Models.AlarmClock alarmClock = new Models.AlarmClock(null, new DateTime(today.Year, today.Month, today.Day+1, 0, 0, 0));
-                    StationManager.CurrentUser.AlarmClocks.Add(alarmClock);
+                    AlarmClockForView alarmClock = new AlarmClockForView(null, new DateTime(today.Year, today.Month, today.Day+1, 0, 0, 0));
+                    StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
                     AlarmClocks.Add(alarmClock);
                     SelectedAlarmClock = alarmClock;
                 }));
@@ -53,20 +54,21 @@ namespace AlarmClock.ViewModels.AlarmClocks
                     if (SelectedAlarmClock == null) return;
                     
                     StationManager.CurrentUser.AlarmClocks.RemoveAll(alarmClock => alarmClock.Guid == SelectedAlarmClock.Guid);
-                    FillAlarmClocks();
-                    OnPropertyChanged(nameof(SelectedAlarmClock));
-                    OnPropertyChanged(nameof(AlarmClocks));
+                    int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);
+                    int newIndex = deletedAlarmClockIndex == 0 ? deletedAlarmClockIndex : deletedAlarmClockIndex - 1;
+                    AlarmClocks.Remove(SelectedAlarmClock);
+                    SelectedAlarmClock = AlarmClocks.Count != 0 ? AlarmClocks[newIndex] : null;
                 }));
             }
         }
 
         #endregion
 
-        public ObservableCollection<Models.AlarmClock> AlarmClocks
+        public ObservableCollection<AlarmClockForView> AlarmClocks
         {
             get { return _alarmClocks; }
         }
-        public Models.AlarmClock SelectedAlarmClock
+        public AlarmClockForView SelectedAlarmClock
         {
             get { return _selectedAlarmClock; }
             set
@@ -75,7 +77,6 @@ namespace AlarmClock.ViewModels.AlarmClocks
                 OnPropertyChanged();
             }
         }
-
         #endregion
 
         #region Constructor
@@ -92,10 +93,10 @@ namespace AlarmClock.ViewModels.AlarmClocks
         }
         private void FillAlarmClocks()
         {
-            _alarmClocks = new ObservableCollection<Models.AlarmClock>();
+            _alarmClocks = new ObservableCollection<AlarmClockForView>();
             foreach (Models.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
             {
-                _alarmClocks.Add(alarmClock);
+                _alarmClocks.Add(new AlarmClockForView(alarmClock));
             }
             if (_alarmClocks.Count > 0)
             {
@@ -106,9 +107,9 @@ namespace AlarmClock.ViewModels.AlarmClocks
         #region EventsAndHandlers
         #region Loader
         internal event AlarmClockChangedHandler AlarmClockChanged;
-        internal delegate void AlarmClockChangedHandler(Models.AlarmClock alarmClock);
+        internal delegate void AlarmClockChangedHandler(AlarmClockForView alarmClock);
 
-        internal virtual void OnAlarmClockChanged(Models.AlarmClock alarmClock)
+        internal virtual void OnAlarmClockChanged(AlarmClockForView alarmClock)
         {
             AlarmClockChanged?.Invoke(alarmClock);
         }

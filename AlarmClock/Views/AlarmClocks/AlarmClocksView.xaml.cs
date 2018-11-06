@@ -30,12 +30,13 @@ namespace AlarmClock.Views.AlarmClocks
         {   
             InitializeComponent();
             Visibility = Visibility.Visible;
+            AlarmClockView.Visibility = Visibility.Collapsed;
             _alarmClocksViewModel = new AlarmClocksViewModel();
             _alarmClocksViewModel.AlarmClockChanged += OnAlarmClockChanged;
             DataContext = _alarmClocksViewModel;
         }
 
-        private void OnAlarmClockChanged(Models.AlarmClock alarmClock)
+        private void OnAlarmClockChanged(AlarmClockForView alarmClock)
         {
             if(alarmClock == null)
             {
@@ -49,12 +50,6 @@ namespace AlarmClock.Views.AlarmClocks
             AlarmClockViewModel alarmClockViewModel = new AlarmClockViewModel(alarmClock);
             AlarmClockView.Visibility = Visibility.Visible;
             AlarmClockView.DataContext = alarmClockViewModel;
-            alarmClockViewModel.AlarmClockTimeUpdated += OnAlarmClockTimeUpdated;
-        }
-
-        private void OnAlarmClockTimeUpdated(Models.AlarmClock updatedAlarmClock)
-        {
-            alarmClocksList.Items.Refresh();
         }
     }
 }
