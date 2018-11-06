@@ -37,6 +37,11 @@ namespace AlarmClock.Views.AlarmClocks
 
         private void OnAlarmClockChanged(Models.AlarmClock alarmClock)
         {
+            if(alarmClock == null)
+            {
+                _currentAlarmClockView.Visibility = Visibility.Collapsed;
+                return;
+            }
             if (_currentAlarmClockView == null)
             {
                 _currentAlarmClockView = new AlarmClockView(alarmClock);
@@ -46,6 +51,7 @@ namespace AlarmClock.Views.AlarmClocks
                 Grid.SetColumn(_currentAlarmClockView, 1);
             }
             AlarmClockViewModel alarmClockViewModel = new AlarmClockViewModel(alarmClock);
+            _currentAlarmClockView.Visibility = Visibility.Visible;
             _currentAlarmClockView.DataContext = alarmClockViewModel;
             alarmClockViewModel.AlarmClockTimeUpdated += OnAlarmClockTimeUpdated;
         }

@@ -17,9 +17,9 @@ namespace AlarmClock.Tools
             System.Globalization.CultureInfo culture)
         {
             if (!(bool)value)
-                return Visibility.Visible;
-            else
                 return Visibility.Hidden;
+            else
+                return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,

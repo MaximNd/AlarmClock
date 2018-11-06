@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using AlarmClock.Managers;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
 
@@ -20,6 +21,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         private Models.AlarmClock _currentAlarmClock;
         private string _selectedHour;
         private string _selectedMinute;
+        private bool _isClockPresent;
         private List<string> _hours = new List<string>();
         private List<string> _minutes = new List<string>();
         #region Commands
@@ -38,12 +40,20 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             {
                 return _saveNewTime ?? (_saveNewTime = new RelayCommand<object>((object o) =>
                 {
+
                     int currentNextYear = _currentAlarmClock.NextTriggerDate.Year;
                     int currentNextMonth = _currentAlarmClock.NextTriggerDate.Month;
                     int currentNextDay = _currentAlarmClock.NextTriggerDate.Day;
                     int updatedNextHour = Int32.Parse(SelectedHour);
                     int updatedNexMinute = Int32.Parse(SelectedMinute);
-                    _currentAlarmClock.NextTriggerDate = new DateTime(currentNextYear, currentNextMonth, currentNextDay, updatedNextHour, updatedNexMinute, 0);
+                    DateTime dateTime = new DateTime(currentNextYear, currentNextMonth, currentNextDay, updatedNextHour, updatedNexMinute, 0);
+                    foreach(Models.AlarmClock ac in StationManager.CurrentUser.AlarmClocks)
+                    {
+                        if (ac.NextTriggerDate == dateTime)
+                            //TODO Proper handling  
+                            return;
+                    }
+                    _currentAlarmClock.NextTriggerDate = dateTime;
                     OnPropertyChanged(nameof(_currentAlarmClock));
                     OnAlarmClockTimeUpdated(_currentAlarmClock);
                 }));
@@ -114,10 +124,23 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         }
         public bool IsAlarming
         {
-            get { return _currentAlarmClock.IsAlarming; }
+            get {
+                if (!this._isClockPresent)
+                    return false;
+                return _currentAlarmClock.IsAlarming;
+            }
             set
             {
                 _currentAlarmClock.IsAlarming = value;
+                OnPropertyChanged();
+            }
+        }
+        internal bool IsClockPresent
+        {
+            get { return this._isClockPresent; }
+            set
+            {
+                this._isClockPresent = value;
                 OnPropertyChanged();
             }
         }
@@ -126,6 +149,12 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         #region Constructor
         public AlarmClockViewModel(Models.AlarmClock alarmClock)
         {
+            if(alarmClock == null)
+            {
+                IsClockPresent = false;
+                return;
+            }
+            IsClockPresent = true;
             _currentAlarmClock = alarmClock;
             Initialize();
         }

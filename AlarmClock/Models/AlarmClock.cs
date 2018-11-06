@@ -54,6 +54,11 @@ namespace AlarmClock.Models
         {
         }
 
+        public bool Equals(AlarmClock alarmClock)
+        {
+            return this.NextTriggerDate == alarmClock.NextTriggerDate;
+        }
+
         public override string ToString()
         {
             return $"The alarm clock will trigger at {_nextTriggerDate}";
