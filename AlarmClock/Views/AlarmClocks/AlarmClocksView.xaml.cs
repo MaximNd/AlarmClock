@@ -12,9 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AlarmClock.Models;
 using AlarmClock.ViewModels.AlarmClocks;
 using AlarmClock.ViewModels.AlarmClocks.AlarmClock;
-using AlarmClock.Views.AlarmClocks.AlarmClock;
+using AlarmClock.Views.AlarmClocks.AlarmClockConfig;
 
 namespace AlarmClock.Views.AlarmClocks
 {
@@ -24,10 +25,9 @@ namespace AlarmClock.Views.AlarmClocks
     public partial class AlarmClocksView : UserControl
     {
         private AlarmClocksViewModel _alarmClocksViewModel;
-        private AlarmClockView _currentAlarmClockView;
 
         public AlarmClocksView()
-        {
+        {   
             InitializeComponent();
             Visibility = Visibility.Visible;
             _alarmClocksViewModel = new AlarmClocksViewModel();
@@ -39,20 +39,16 @@ namespace AlarmClock.Views.AlarmClocks
         {
             if(alarmClock == null)
             {
-                _currentAlarmClockView.Visibility = Visibility.Collapsed;
+                AlarmClockView.Visibility = Visibility.Collapsed;
                 return;
             }
-            if (_currentAlarmClockView == null)
+            if (AlarmClockView == null)
             {
-                _currentAlarmClockView = new AlarmClockView(alarmClock);
-                AlarmClocksGrid.Children.Add(_currentAlarmClockView);
-                Grid.SetRow(_currentAlarmClockView, 0);
-                Grid.SetRowSpan(_currentAlarmClockView, 2);
-                Grid.SetColumn(_currentAlarmClockView, 1);
+                AlarmClockView = new AlarmClockView();
             }
             AlarmClockViewModel alarmClockViewModel = new AlarmClockViewModel(alarmClock);
-            _currentAlarmClockView.Visibility = Visibility.Visible;
-            _currentAlarmClockView.DataContext = alarmClockViewModel;
+            AlarmClockView.Visibility = Visibility.Visible;
+            AlarmClockView.DataContext = alarmClockViewModel;
             alarmClockViewModel.AlarmClockTimeUpdated += OnAlarmClockTimeUpdated;
         }
 
