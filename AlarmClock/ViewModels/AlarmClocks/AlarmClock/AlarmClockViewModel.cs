@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Media;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using AlarmClock.Managers;
 using AlarmClock.Models;
@@ -42,11 +44,14 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                     int updatedNextHour = Int32.Parse(SelectedHour);
                     int updatedNexMinute = Int32.Parse(SelectedMinute);
                     DateTime dateTime = new DateTime(currentNextYear, currentNextMonth, currentNextDay, updatedNextHour, updatedNexMinute, 0);
-                    foreach(Models.AlarmClock ac in StationManager.CurrentUser.AlarmClocks)
+                    foreach (Models.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
                     {
-                        if (ac.NextTriggerDate == dateTime)
-                            //TODO Proper handling  
+                        if (alarmClock.Guid != _currentAlarmClock.AlarmClock.Guid && alarmClock.NextTriggerDate == dateTime)
+                        {
+                            SystemSounds.Beep.Play();
+                            MessageBox.Show("The alarm time must be unique.");
                             return;
+                        }
                     }
                     _currentAlarmClock.NextTriggerDate = dateTime;
                     OnPropertyChanged(nameof(_currentAlarmClock));
