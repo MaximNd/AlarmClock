@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using AlarmClock.Managers;
 using AlarmClock.Models;
@@ -15,6 +16,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
         #region Fields
         private AlarmClockForView _selectedAlarmClock;
         private ObservableCollection<AlarmClockForView> _alarmClocks = new ObservableCollection<AlarmClockForView>();
+        private bool _isAlarmClockSelected = false;
         #region Commands
         private ICommand _addAlarmClockCommand;
         private ICommand _deleteAlarmClockCommand;
@@ -35,6 +37,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
                     StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
                     AlarmClocks.Add(alarmClock);
                     SelectedAlarmClock = alarmClock;
+                    IsAlarmClockSelected = true;
                 }));
             }
         }
@@ -51,7 +54,16 @@ namespace AlarmClock.ViewModels.AlarmClocks
                     int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);
                     int newIndex = deletedAlarmClockIndex == 0 ? deletedAlarmClockIndex : deletedAlarmClockIndex - 1;
                     AlarmClocks.Remove(SelectedAlarmClock);
-                    SelectedAlarmClock = AlarmClocks.Count != 0 ? AlarmClocks[newIndex] : null;
+                    //SelectedAlarmClock = AlarmClocks.Count != 0 ? AlarmClocks[newIndex] : null;
+                    if (AlarmClocks.Count != 0)
+                    {
+                        SelectedAlarmClock = AlarmClocks[newIndex];
+                    }
+                    else
+                    {
+                        SelectedAlarmClock = null;
+                        IsAlarmClockSelected = false;
+                    }
                 }));
             }
         }
@@ -68,6 +80,18 @@ namespace AlarmClock.ViewModels.AlarmClocks
             set
             {
                 _selectedAlarmClock = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsAlarmClockSelected
+        {
+            get
+            {
+                return _isAlarmClockSelected;
+            }
+            set
+            {
+                _isAlarmClockSelected = value;
                 OnPropertyChanged();
             }
         }
