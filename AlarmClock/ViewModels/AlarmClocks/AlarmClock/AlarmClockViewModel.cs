@@ -155,31 +155,13 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
 
         private void Initialize()
         {
-            GenerateHours();
-            GenerateMinutes();
+            Hours = TimeGenerator.GenerateHours();
+            Minutes = TimeGenerator.GenerateMinutes();
             int hour = _currentAlarmClock.NextTriggerDate.Hour;
             int minute = _currentAlarmClock.NextTriggerDate.Minute;
-            _selectedHour = hour < 10 ? $"0{hour}" : $"{hour}";
-            _selectedMinute = minute < 10 ? $"0{minute}" : $"{minute}";
+            _selectedHour = TimeGenerator.GetFormattedTime(hour);
+            _selectedMinute = TimeGenerator.GetFormattedTime(minute);
             IsAlarming = false;
-        }
-
-        private void GenerateHours()
-        {
-            for (int i = 0; i < 24; ++i)
-            {
-                string hour = i < 10 ? $"0{i}" : $"{i}";
-                _hours.Add(hour);
-            }
-        }
-
-        private void GenerateMinutes()
-        {
-            for (int i = 0; i < 60; ++i)
-            {
-                string minute = i < 10 ? $"0{i}" : $"{i}";
-                _minutes.Add(minute);
-            }
         }
 
         #region EventsAndHandlers
