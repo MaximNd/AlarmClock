@@ -13,7 +13,7 @@ namespace AlarmClock.Tools
             System.Globalization.CultureInfo culture)
         {
             if (!(bool)value)
-                return Visibility.Hidden;
+                return Visibility.Visible;
             else
                 return Visibility.Collapsed;
         }
