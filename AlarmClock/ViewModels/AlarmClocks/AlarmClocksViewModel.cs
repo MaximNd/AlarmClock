@@ -8,6 +8,7 @@ using AlarmClock.Managers;
 using AlarmClock.Models;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
+using AlarmClock.Views.AlarmClocks;
 
 namespace AlarmClock.ViewModels.AlarmClocks
 {
@@ -32,12 +33,17 @@ namespace AlarmClock.ViewModels.AlarmClocks
             {
                 return _addAlarmClockCommand ?? (_addAlarmClockCommand = new RelayCommand<object>((object o) =>
                 {
-                    DateTime today = DateTime.Today;
-                    AlarmClockForView alarmClock = new AlarmClockForView(null, new DateTime(today.Year, today.Month, today.Day+1, 0, 0, 0));
-                    StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
-                    AlarmClocks.Add(alarmClock);
-                    SelectedAlarmClock = alarmClock;
-                    IsAlarmClockSelected = true;
+                    CreateAlarmClockViewModel createAlarmClockViewModel = new CreateAlarmClockViewModel();
+                    CreateAlarmClockView createAlarmClockView = new CreateAlarmClockView(createAlarmClockViewModel);
+
+                    if (createAlarmClockView.ShowDialog() == true)
+                    {
+                        AlarmClockForView alarmClock = new AlarmClockForView(null, createAlarmClockViewModel.NewDateTime);
+                        StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
+                        AlarmClocks.Add(alarmClock);
+                        SelectedAlarmClock = alarmClock;
+                        IsAlarmClockSelected = true;
+                    }
                 }));
             }
         }
@@ -54,7 +60,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
                     int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);
                     int newIndex = deletedAlarmClockIndex == 0 ? deletedAlarmClockIndex : deletedAlarmClockIndex - 1;
                     AlarmClocks.Remove(SelectedAlarmClock);
-                    //SelectedAlarmClock = AlarmClocks.Count != 0 ? AlarmClocks[newIndex] : null;
+
                     if (AlarmClocks.Count != 0)
                     {
                         SelectedAlarmClock = AlarmClocks[newIndex];
