@@ -21,7 +21,6 @@ namespace AlarmClock.ViewModels.AlarmClocks
         #region Commands
         private ICommand _addAlarmClockCommand;
         private ICommand _deleteAlarmClockCommand;
-        private ICommand _closeCommand;
         private ICommand _logoutCommand;
         #endregion
         #endregion
