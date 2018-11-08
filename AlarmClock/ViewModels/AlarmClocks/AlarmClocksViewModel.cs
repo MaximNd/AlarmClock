@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using AlarmClock.Managers;
 using AlarmClock.Models;
@@ -31,18 +33,26 @@ namespace AlarmClock.ViewModels.AlarmClocks
         {
             get
             {
-                return _addAlarmClockCommand ?? (_addAlarmClockCommand = new RelayCommand<object>((object o) =>
+                return _addAlarmClockCommand ?? (_addAlarmClockCommand = new RelayCommand<object>(async(object o) =>
                 {
                     CreateAlarmClockViewModel createAlarmClockViewModel = new CreateAlarmClockViewModel();
                     CreateAlarmClockView createAlarmClockView = new CreateAlarmClockView(createAlarmClockViewModel);
 
                     if (createAlarmClockView.ShowDialog() == true)
                     {
+                        LoaderManager.Instance.ShowLoader();
+                        await Task.Run(() =>
+                        {
+                            // TODO delete this later
+                            // fake DB delay
+                            Thread.Sleep(500);
+                        });
                         AlarmClockForView alarmClock = new AlarmClockForView(null, createAlarmClockViewModel.NewDateTime);
                         StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
                         AlarmClocks.Add(alarmClock);
                         SelectedAlarmClock = alarmClock;
                         IsAlarmClockSelected = true;
+                        LoaderManager.Instance.HideLoader();
                     }
                 }));
             }
@@ -52,10 +62,16 @@ namespace AlarmClock.ViewModels.AlarmClocks
         {
             get
             {
-                return _deleteAlarmClockCommand ?? (_deleteAlarmClockCommand = new RelayCommand<object>((object o) =>
+                return _deleteAlarmClockCommand ?? (_deleteAlarmClockCommand = new RelayCommand<object>(async (object o) =>
                 {
                     if (SelectedAlarmClock == null) return;
-                    
+                    LoaderManager.Instance.ShowLoader();
+                    await Task.Run(() =>
+                    {
+                        // TODO delete this later
+                        // fake DB delay
+                        Thread.Sleep(500);
+                    });
                     StationManager.CurrentUser.AlarmClocks.RemoveAll(alarmClock => alarmClock.Guid == SelectedAlarmClock.Guid);
                     int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);
                     int newIndex = deletedAlarmClockIndex == 0 ? deletedAlarmClockIndex : deletedAlarmClockIndex - 1;
@@ -70,6 +86,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
                         SelectedAlarmClock = null;
                         IsAlarmClockSelected = false;
                     }
+                    LoaderManager.Instance.HideLoader();
                 }));
             }
         }

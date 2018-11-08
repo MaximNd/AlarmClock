@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Media;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using AlarmClock.Managers;
@@ -35,9 +37,9 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         {
             get
             {
-                return _saveNewTime ?? (_saveNewTime = new RelayCommand<object>((object o) =>
+                return _saveNewTime ?? (_saveNewTime = new RelayCommand<object>(async (object o) =>
                 {
-
+                    LoaderManager.Instance.ShowLoader();
                     int currentNextYear = _currentAlarmClock.NextTriggerDate.Year;
                     int currentNextMonth = _currentAlarmClock.NextTriggerDate.Month;
                     int currentNextDay = _currentAlarmClock.NextTriggerDate.Day;
@@ -53,8 +55,15 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                             return;
                         }
                     }
+                    await Task.Run(() =>
+                    {
+                        // TODO delete this later
+                        // fake DB delay
+                        Thread.Sleep(500);
+                    });
                     _currentAlarmClock.NextTriggerDate = dateTime;
                     OnPropertyChanged(nameof(_currentAlarmClock));
+                    LoaderManager.Instance.HideLoader();
                 }));
             }
         }

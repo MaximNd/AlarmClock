@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using AlarmClock.Managers;
@@ -110,41 +112,54 @@ namespace AlarmClock.ViewModels.Authentication
         }
         #endregion
 
-        private void SignUpExecute(object obj)
+        private async void SignUpExecute(object obj)
         {
-            try
+            LoaderManager.Instance.ShowLoader();
+            var res = await Task.Run(() =>
             {
-                if (!new EmailAddressAttribute().IsValid(_email))
+                // TODO delete this later
+                // faking delay
+                Thread.Sleep(500);
+
+                try
                 {
-                    MessageBox.Show(String.Format(Resources.SignUp_EmailIsNotValid, _email));
-                    return;
+                    if (!new EmailAddressAttribute().IsValid(_email))
+                    {
+                        MessageBox.Show(String.Format(Resources.SignUp_EmailIsNotValid, _email));
+                        return false;
+                    }
+                    if (DBManager.UserExists(_login))
+                    {
+                        MessageBox.Show(String.Format(Resources.SignUp_UserAlreadyExists, _login));
+                        return false;
+                    }
                 }
-                if (DBManager.UserExists(_login))
+                catch (Exception ex)
                 {
-                    MessageBox.Show(String.Format(Resources.SignUp_UserAlreadyExists, _login));
-                    return;
+                    MessageBox.Show(String.Format(Resources.SignUp_FailedToValidateData, Environment.NewLine,
+                        ex.Message));
+                    return false;
                 }
-            }
-            catch (Exception ex)
+                try
+                {
+                    var user = new User(_firstName, _lastName, _email, _login, _password);
+                    DBManager.AddUser(user);
+                    StationManager.CurrentUser = user;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(String.Format(Resources.SignUp_FailedToCreateUser, Environment.NewLine,
+                        ex.Message));
+                    return false;
+                }
+                MessageBox.Show(String.Format(Resources.SignUp_UserSuccessfulyCreated, _login));
+                return true;
+            });
+            LoaderManager.Instance.HideLoader();
+            if (res)
             {
-                MessageBox.Show(String.Format(Resources.SignUp_FailedToValidateData, Environment.NewLine,
-                    ex.Message));
-                return;
+                NavigationManager.Instance.Navigate(ModesEnum.AlarmsClocks);
             }
-            try
-            {
-                var user = new User(_firstName, _lastName, _email, _login, _password);
-                DBManager.AddUser(user);
-                StationManager.CurrentUser = user;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(String.Format(Resources.SignUp_FailedToCreateUser, Environment.NewLine,
-                    ex.Message));
-                return;
-            }
-            MessageBox.Show(String.Format(Resources.SignUp_UserSuccessfulyCreated, _login));
-            NavigationManager.Instance.Navigate(ModesEnum.AlarmsClocks);
         }
         private bool SignUpCanExecute(object obj)
         {

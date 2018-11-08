@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using AlarmClock.Managers;
@@ -42,6 +44,7 @@ namespace AlarmClock.ViewModels.Authentication
                 OnPropertyChanged();
             }
         }
+
         #region Commands
 
         public ICommand CloseCommand
@@ -82,40 +85,53 @@ namespace AlarmClock.ViewModels.Authentication
             NavigationManager.Instance.Navigate(ModesEnum.SingUp);
         }
 
-        private void SignInExecute(object obj)
+        private async void SignInExecute(object obj)
         {
-            User currentUser;
-            try
+            LoaderManager.Instance.ShowLoader();
+            var res = await Task.Run(() =>
             {
-                currentUser = DBManager.GetUserByLogin(_login);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(String.Format(Resources.SignIn_FailedToGetUser, Environment.NewLine,
-                    ex.Message));
-                return;
-            }
-            if (currentUser == null)
-            {
-                MessageBox.Show(String.Format(Resources.SignIn_UserDoesntExist, _login));
-                return;
-            }
-            try
-            {
-                if (!currentUser.CheckPassword(_password))
+                // TODO delete this later
+                // faking delay
+                Thread.Sleep(500);
+
+                User currentUser;
+                try
                 {
-                    MessageBox.Show(Resources.SignIn_WrongPassword);
-                    return;
+                    currentUser = DBManager.GetUserByLogin(_login);
                 }
-            }
-            catch (Exception ex)
+                catch (Exception ex)
+                {
+                    MessageBox.Show(String.Format(Resources.SignIn_FailedToGetUser, Environment.NewLine,
+                        ex.Message));
+                    return false;
+                }
+                if (currentUser == null)
+                {
+                    MessageBox.Show(String.Format(Resources.SignIn_UserDoesntExist, _login));
+                    return false;
+                }
+                try
+                {
+                    if (!currentUser.CheckPassword(_password))
+                    {
+                        MessageBox.Show(Resources.SignIn_WrongPassword);
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(String.Format(Resources.SignIn_FailedToValidatePassword, Environment.NewLine,
+                        ex.Message));
+                    return false;
+                }
+                StationManager.CurrentUser = currentUser;
+                return true;
+            });
+            LoaderManager.Instance.HideLoader();
+            if (res)
             {
-                MessageBox.Show(String.Format(Resources.SignIn_FailedToValidatePassword, Environment.NewLine,
-                    ex.Message));
-                return;
+                NavigationManager.Instance.Navigate(ModesEnum.AlarmsClocks);
             }
-            StationManager.CurrentUser = currentUser;
-            NavigationManager.Instance.Navigate(ModesEnum.AlarmsClocks);
         }
 
         private bool SignInCanExecute(object obj)
