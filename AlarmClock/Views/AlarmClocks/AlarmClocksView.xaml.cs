@@ -18,8 +18,7 @@ namespace AlarmClock.Views.AlarmClocks
         {   
             InitializeComponent();
             Visibility = Visibility.Visible;
-            _alarmClocksViewModel = new AlarmClocksViewModel();
-            _alarmClocksViewModel.AlarmClockChanged += OnAlarmClockChanged;
+            _alarmClocksViewModel = new AlarmClocksViewModel(OnAlarmClockChanged);
             DataContext = _alarmClocksViewModel;
         }
 

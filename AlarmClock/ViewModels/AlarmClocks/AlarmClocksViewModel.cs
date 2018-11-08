@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Input;
 using AlarmClock.Managers;
 using AlarmClock.Models;
@@ -17,7 +15,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
         #region Fields
         private AlarmClockForView _selectedAlarmClock;
         private ObservableCollection<AlarmClockForView> _alarmClocks = new ObservableCollection<AlarmClockForView>();
-        private bool _isAlarmClockSelected = false;
+        private bool _isAlarmClockSelected;
         #region Commands
         private ICommand _addAlarmClockCommand;
         private ICommand _deleteAlarmClockCommand;
@@ -122,17 +120,22 @@ namespace AlarmClock.ViewModels.AlarmClocks
         #endregion
 
         #region Constructor
-        public AlarmClocksViewModel()
+        public AlarmClocksViewModel(AlarmClockChangedHandler onAlarmClockChanged)
         {
+            AlarmClockChanged += onAlarmClockChanged;
             PropertyChanged += OnPropertyChanged;
             FillAlarmClocks();
-            IsAlarmClockSelected = true;
+            IsAlarmClockSelected = SelectedAlarmClock != null;
         }
         #endregion
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            if (propertyChangedEventArgs.PropertyName == nameof(SelectedAlarmClock) || propertyChangedEventArgs.PropertyName == nameof(_selectedAlarmClock))
+            if (propertyChangedEventArgs.PropertyName == nameof(SelectedAlarmClock) ||
+                propertyChangedEventArgs.PropertyName == nameof(_selectedAlarmClock))
+            {
                 OnAlarmClockChanged(SelectedAlarmClock);
+                IsAlarmClockSelected = SelectedAlarmClock != null;
+            }
         }
         public void FillAlarmClocks()
         {
@@ -143,7 +146,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
             }
             if (_alarmClocks.Count > 0)
             {
-                _selectedAlarmClock = AlarmClocks[0];
+                SelectedAlarmClock = AlarmClocks[0];
                 OnAlarmClockChanged(SelectedAlarmClock);
             }
         }
