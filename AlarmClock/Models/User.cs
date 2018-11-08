@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using AlarmClock.Tools;
+using AlarmClock.Tools.Serialization;
 
 namespace AlarmClock.Models
 {
@@ -23,6 +25,7 @@ namespace AlarmClock.Models
         #endregion
 
         #region Properties
+        [XmlIgnore]
         public Guid Guid
         {
             get
@@ -34,7 +37,7 @@ namespace AlarmClock.Models
                 _guid = value;
             }
         }
-        private string FirstName
+        internal string FirstName
         {
             get
             {
@@ -45,7 +48,7 @@ namespace AlarmClock.Models
                 _firstName = value;
             }
         }
-        private string LastName
+        internal string LastName
         {
             get
             {
@@ -56,7 +59,7 @@ namespace AlarmClock.Models
                 _lastName = value;
             }
         }
-        private string Email
+        internal string Email
         {
             get
             {
@@ -68,7 +71,7 @@ namespace AlarmClock.Models
             }
         }
 
-        public string Login
+        internal string Login
         {
             get
             {
@@ -79,7 +82,7 @@ namespace AlarmClock.Models
                 _login = value;
             }
         }
-        private string Password
+        internal string Password
         {
             get
             {
@@ -90,7 +93,7 @@ namespace AlarmClock.Models
                 _password = value;
             }
         }
-        private DateTime LastLoginDate
+        internal DateTime LastLoginDate
         {
             get
             {
@@ -101,7 +104,7 @@ namespace AlarmClock.Models
                 _lastLoginDate = value;
             }
         }
-        public List<AlarmClock> AlarmClocks
+        internal List<AlarmClock> AlarmClocks
         {
             get
             {
@@ -150,6 +153,30 @@ namespace AlarmClock.Models
             {
                 return false;
             }
+        }
+
+        public static explicit operator User(UserDTO userDTO)
+        {
+            User user = new User
+            {
+                _firstName = userDTO._firstName,
+                _lastName = userDTO._lastName,
+                _email = userDTO._email,
+                _login = userDTO._login,
+                _password = userDTO._password,
+                _lastLoginDate = userDTO._lastLoginDate,
+                _alarmClocks = new List<AlarmClock>()
+            };
+            foreach(AlarmClockDTO acDTO in userDTO._alarmClockDTOs)
+            {
+                user._alarmClocks.Add(new AlarmClock
+                {
+                    IsAlarming = false,
+                    LastTriggerDate = acDTO._lastTriggerDate,
+                    NextTriggerDate = acDTO._nextTriggerDate
+                });
+            }
+            return user;
         }
 
         public override string ToString()

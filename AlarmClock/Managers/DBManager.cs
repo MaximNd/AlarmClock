@@ -6,7 +6,7 @@ namespace AlarmClock.Managers
 {
     public class DBManager
     {
-        private static readonly List<User> Users = new List<User>();
+        internal static List<User> Users = new List<User>();
 
         static DBManager()
         {
@@ -27,7 +27,9 @@ namespace AlarmClock.Managers
 
         public static void AddUser(User user)
         {
-            Users.Add(user);
+            //TODO? handling when adding user with same login
+            if(!UserExists(user.Login))
+                Users.Add(user);
         }
     }
 }

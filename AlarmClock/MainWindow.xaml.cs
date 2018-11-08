@@ -14,7 +14,10 @@ namespace AlarmClock
             InitializeComponent();
             var navigationModel = new NavigationModel(this);
             NavigationManager.Instance.Initialize(navigationModel);
-            navigationModel.Navigate(ModesEnum.SignIn);
+            if(StationManager.CurrentUser==null)
+                navigationModel.Navigate(ModesEnum.SignIn);
+            else
+                navigationModel.Navigate(ModesEnum.AlarmsClocks);
         }
 
         public ContentControl ContentControl

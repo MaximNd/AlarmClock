@@ -18,6 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Horizontal">
             <Button Width="200" Content="Add Alarm Clock" Command="{ Binding AddAlarmClockCommand }"/>
@@ -39,6 +40,8 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Button Grid.Column="0" Grid.Row="2" Content="Logout"  Width="200" Command="{Binding LogoutCommand}"/>
+        <Button Grid.Column="1" Grid.Row="2" Content="Close Application" Width="200" Command="{Binding CloseCommand}"/>
         <StackPanel Visibility="{ Binding Path=IsAlarmClockSelected, Converter={StaticResource Converter} }"
                     Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
             <alarmClock:AlarmClockView x:Name="AlarmClockView" />

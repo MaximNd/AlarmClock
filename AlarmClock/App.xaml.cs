@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using AlarmClock.Managers;
+using System.Windows;
 
 namespace AlarmClock
 {
@@ -7,5 +8,9 @@ namespace AlarmClock
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            StationManager.ImportData();
+        }
     }
 }

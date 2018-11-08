@@ -21,6 +21,8 @@ namespace AlarmClock.ViewModels.AlarmClocks
         #region Commands
         private ICommand _addAlarmClockCommand;
         private ICommand _deleteAlarmClockCommand;
+        private ICommand _closeCommand;
+        private ICommand _logoutCommand;
         #endregion
         #endregion
 
@@ -74,6 +76,22 @@ namespace AlarmClock.ViewModels.AlarmClocks
             }
         }
 
+        public ICommand CloseCommand
+        {
+            get
+            {
+                return _closeCommand ?? (_closeCommand = new RelayCommand<object>(CloseExecute));
+            }
+        }
+
+        public ICommand LogoutCommand
+        {
+            get
+            {
+                return _logoutCommand ?? (_logoutCommand = new RelayCommand<object>(LogoutExecute));
+            }
+        }
+
         #endregion
 
         public ObservableCollection<AlarmClockForView> AlarmClocks
@@ -106,8 +124,9 @@ namespace AlarmClock.ViewModels.AlarmClocks
         #region Constructor
         public AlarmClocksViewModel()
         {
-            FillAlarmClocks();
             PropertyChanged += OnPropertyChanged;
+            FillAlarmClocks();
+            IsAlarmClockSelected = true;
         }
         #endregion
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -115,7 +134,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
             if (propertyChangedEventArgs.PropertyName == nameof(SelectedAlarmClock) || propertyChangedEventArgs.PropertyName == nameof(_selectedAlarmClock))
                 OnAlarmClockChanged(SelectedAlarmClock);
         }
-        private void FillAlarmClocks()
+        public void FillAlarmClocks()
         {
             _alarmClocks = new ObservableCollection<AlarmClockForView>();
             foreach (Models.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
@@ -125,7 +144,21 @@ namespace AlarmClock.ViewModels.AlarmClocks
             if (_alarmClocks.Count > 0)
             {
                 _selectedAlarmClock = AlarmClocks[0];
+                OnAlarmClockChanged(SelectedAlarmClock);
             }
+        }
+
+        private void CloseExecute(object obj)
+        {
+            StationManager.CloseApp();
+        }
+
+        private void LogoutExecute(object obj)
+        {
+            SelectedAlarmClock = null;
+            StationManager.CurrentUser = null;
+            AlarmClocks.Clear();
+            NavigationManager.Instance.Navigate(ModesEnum.SignIn);
         }
 
         #region EventsAndHandlers

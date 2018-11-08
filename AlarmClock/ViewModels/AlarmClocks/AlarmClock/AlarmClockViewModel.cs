@@ -65,12 +65,8 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             {
                 return _testAlarm ?? (_testAlarm = new RelayCommand<object>((object o) =>
                 {
-                    int currentNextYear = _currentAlarmClock.NextTriggerDate.Year;
-                    int currentNextMonth = _currentAlarmClock.NextTriggerDate.Month;
-                    int currentNextDay = _currentAlarmClock.NextTriggerDate.Day;
-                    int updatedNextHour = Int32.Parse(SelectedHour);
-                    int updatedNexMinute = Int32.Parse(SelectedMinute);
                     IsAlarming = true;
+                    _currentAlarmClock.NextTriggerDate = _currentAlarmClock.NextTriggerDate.AddDays(1);
                     _currentAlarmClock.LastTriggerDate = DateTime.Now;
                     OnPropertyChanged(nameof(_currentAlarmClock));
                 }));

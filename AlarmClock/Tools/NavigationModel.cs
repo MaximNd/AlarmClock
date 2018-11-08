@@ -34,7 +34,7 @@ namespace AlarmClock.Tools
                     _contentWindow.ContentControl.Content = _signUpView ?? (_signUpView = new SignUpView());
                     break;
                 case ModesEnum.AlarmsClocks:
-                    _contentWindow.ContentControl.Content = _alarmsClocksView ?? (_alarmsClocksView = new AlarmClocksView());
+                    _contentWindow.ContentControl.Content = (_alarmsClocksView = new AlarmClocksView());
                     break;;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mode), mode, null);

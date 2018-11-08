@@ -76,7 +76,7 @@ namespace AlarmClock.ViewModels.Authentication
         {
         }
         #endregion
-
+        
         private void SignUpExecute(object obj)
         {
             NavigationManager.Instance.Navigate(ModesEnum.SingUp);
