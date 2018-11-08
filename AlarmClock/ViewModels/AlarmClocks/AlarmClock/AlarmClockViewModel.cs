@@ -61,6 +61,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                         // fake DB delay
                         Thread.Sleep(500);
                     });
+                    Logger.Log($"User: {StationManager.CurrentUser} updated the alarm clock. Time that was Before: {_currentAlarmClock.AlarmClock.NextTriggerDate}, Time After: {dateTime}");
                     _currentAlarmClock.NextTriggerDate = dateTime;
                     OnPropertyChanged(nameof(_currentAlarmClock));
                     LoaderManager.Instance.HideLoader();

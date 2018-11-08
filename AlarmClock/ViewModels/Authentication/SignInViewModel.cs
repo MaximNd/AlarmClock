@@ -103,11 +103,13 @@ namespace AlarmClock.ViewModels.Authentication
                 {
                     MessageBox.Show(String.Format(Resources.SignIn_FailedToGetUser, Environment.NewLine,
                         ex.Message));
+                    Logger.Log($"{Resources.SignIn_FailedToGetUser}", ex);
                     return false;
                 }
                 if (currentUser == null)
                 {
                     MessageBox.Show(String.Format(Resources.SignIn_UserDoesntExist, _login));
+                    Logger.Log(Resources.SignIn_UserDoesntExist);
                     return false;
                 }
                 try
@@ -115,6 +117,7 @@ namespace AlarmClock.ViewModels.Authentication
                     if (!currentUser.CheckPassword(_password))
                     {
                         MessageBox.Show(Resources.SignIn_WrongPassword);
+                        Logger.Log(Resources.SignIn_WrongPassword);
                         return false;
                     }
                 }
@@ -122,6 +125,7 @@ namespace AlarmClock.ViewModels.Authentication
                 {
                     MessageBox.Show(String.Format(Resources.SignIn_FailedToValidatePassword, Environment.NewLine,
                         ex.Message));
+                    Logger.Log(Resources.SignIn_FailedToValidatePassword, ex);
                     return false;
                 }
                 StationManager.CurrentUser = currentUser;
@@ -130,6 +134,7 @@ namespace AlarmClock.ViewModels.Authentication
             LoaderManager.Instance.HideLoader();
             if (res)
             {
+                Logger.Log($"User: {StationManager.CurrentUser} logged in.");
                 NavigationManager.Instance.Navigate(ModesEnum.AlarmsClocks);
             }
         }

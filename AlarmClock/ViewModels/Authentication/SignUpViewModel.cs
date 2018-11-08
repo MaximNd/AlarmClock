@@ -125,12 +125,16 @@ namespace AlarmClock.ViewModels.Authentication
                 {
                     if (!new EmailAddressAttribute().IsValid(_email))
                     {
-                        MessageBox.Show(String.Format(Resources.SignUp_EmailIsNotValid, _email));
+                        string message = $"{Resources.SignUp_EmailIsNotValid} {_email}";
+                        MessageBox.Show(message);
+                        Logger.Log($"{message}");
                         return false;
                     }
                     if (DBManager.UserExists(_login))
                     {
+                        string message = $"{Resources.SignUp_UserAlreadyExists} {_login}";
                         MessageBox.Show(String.Format(Resources.SignUp_UserAlreadyExists, _login));
+                        Logger.Log($"{message}");
                         return false;
                     }
                 }
@@ -138,6 +142,7 @@ namespace AlarmClock.ViewModels.Authentication
                 {
                     MessageBox.Show(String.Format(Resources.SignUp_FailedToValidateData, Environment.NewLine,
                         ex.Message));
+                    Logger.Log($"{Resources.SignUp_FailedToValidateData}", ex);
                     return false;
                 }
                 try
@@ -153,6 +158,7 @@ namespace AlarmClock.ViewModels.Authentication
                     return false;
                 }
                 MessageBox.Show(String.Format(Resources.SignUp_UserSuccessfulyCreated, _login));
+                Logger.Log($"{Resources.SignUp_UserSuccessfulyCreated}, {_login}");
                 return true;
             });
             LoaderManager.Instance.HideLoader();

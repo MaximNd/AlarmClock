@@ -53,6 +53,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
                         SelectedAlarmClock = alarmClock;
                         IsAlarmClockSelected = true;
                         LoaderManager.Instance.HideLoader();
+                        Logger.Log($"User: {StationManager.CurrentUser} create new AlarmClock: {alarmClock.AlarmClock}");
                     }
                 }));
             }
@@ -75,6 +76,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
                     StationManager.CurrentUser.AlarmClocks.RemoveAll(alarmClock => alarmClock.Guid == SelectedAlarmClock.Guid);
                     int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);
                     int newIndex = deletedAlarmClockIndex == 0 ? deletedAlarmClockIndex : deletedAlarmClockIndex - 1;
+                    Logger.Log($"User: {StationManager.CurrentUser} delete AlarmClock: {SelectedAlarmClock.AlarmClock}");
                     AlarmClocks.Remove(SelectedAlarmClock);
 
                     if (AlarmClocks.Count != 0)
@@ -175,6 +177,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
 
         private void LogoutExecute(object obj)
         {
+            Logger.Log($"User: {StationManager.CurrentUser} is logged out");
             SelectedAlarmClock = null;
             StationManager.CurrentUser = null;
             AlarmClocks.Clear();
