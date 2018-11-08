@@ -12,5 +12,10 @@ namespace AlarmClock
         {
             StationManager.ImportData();
         }
+
+        private void OnExit(object sender, ExitEventArgs e)
+        {
+            StationManager.CloseApp();
+        }
     }
 }
