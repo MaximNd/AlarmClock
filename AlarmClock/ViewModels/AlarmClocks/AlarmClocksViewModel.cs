@@ -93,14 +93,6 @@ namespace AlarmClock.ViewModels.AlarmClocks
             }
         }
 
-        public ICommand CloseCommand
-        {
-            get
-            {
-                return _closeCommand ?? (_closeCommand = new RelayCommand<object>(CloseExecute));
-            }
-        }
-
         public ICommand LogoutCommand
         {
             get
@@ -168,11 +160,6 @@ namespace AlarmClock.ViewModels.AlarmClocks
                 SelectedAlarmClock = AlarmClocks[0];
                 OnAlarmClockChanged(SelectedAlarmClock);
             }
-        }
-
-        private void CloseExecute(object obj)
-        {
-            StationManager.CloseApp();
         }
 
         private void LogoutExecute(object obj)
