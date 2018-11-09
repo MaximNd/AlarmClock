@@ -6,6 +6,7 @@ namespace AlarmClock.Tools.Serialization
 {
     public class UserDTO
     {
+        public string _guid;
         public string _firstName;
         public string _lastName;
         public string _email;
@@ -20,6 +21,7 @@ namespace AlarmClock.Tools.Serialization
         {
             UserDTO userDTO = new UserDTO
             {
+                _guid = user.Guid.ToString(),
                 _firstName = user.FirstName,
                 _lastName = user.LastName,
                 _email = user.Email,
@@ -33,6 +35,7 @@ namespace AlarmClock.Tools.Serialization
             {
                 userDTO._alarmClockDTOs[i] = new AlarmClockDTO
                 {
+                    _guid = user.AlarmClocks[i].Guid.ToString(),
                     _lastTriggerDate = user.AlarmClocks[i].LastTriggerDate,
                     _nextTriggerDate = user.AlarmClocks[i].NextTriggerDate
                 };

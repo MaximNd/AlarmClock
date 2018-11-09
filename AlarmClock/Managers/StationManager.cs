@@ -11,26 +11,28 @@ namespace AlarmClock.Managers
 {
     public static class StationManager
     {
-        private static readonly string dataFile = "../../data.xml";
+        private static readonly string dataFile = Directory.GetCurrentDirectory() + @"\data.xml";
 
-        public static User CurrentUser { get; set; }
+        public static User CurrentUser { get; set; } = null;
 
         public static void ImportData()
         {
-            TextReader reader = null;
-            try
+            if(File.Exists(dataFile))
             {
-                var serializer = new XmlSerializer(typeof(Tools.StoredData));
-                reader = new StreamReader(dataFile);
-                Tools.StoredData dataToStore = (Tools.StoredData)serializer.Deserialize(reader);
-                DBManager.Users = new List<User>(Array.ConvertAll(dataToStore.users, user => (User)user));
-                CurrentUser = DBManager.Users.FirstOrDefault(u => u.Login.Equals(dataToStore.currentUserLogin));
-                User currentUser = CurrentUser;
-            }
-            finally
-            {
-                if (reader != null)
-                    reader.Close();
+                TextReader reader = null;
+                try
+                {
+                    reader = new StreamReader(dataFile);
+                    var serializer = new XmlSerializer(typeof(Tools.StoredData));
+                    Tools.StoredData dataToStore = (Tools.StoredData)serializer.Deserialize(reader);
+                    DBManager.Users = new List<User>(Array.ConvertAll(dataToStore.users, user => (User)user));
+                    CurrentUser = DBManager.Users.FirstOrDefault(u => u.Login.Equals(dataToStore.currentUserLogin));
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
             }
         }
 

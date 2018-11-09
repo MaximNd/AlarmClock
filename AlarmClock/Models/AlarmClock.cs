@@ -48,6 +48,7 @@ namespace AlarmClock.Models
 
         public AlarmClock()
         {
+            _guid = Guid.NewGuid();
         }
 
         public bool Equals(AlarmClock alarmClock)

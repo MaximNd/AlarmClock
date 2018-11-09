@@ -159,6 +159,7 @@ namespace AlarmClock.Models
         {
             User user = new User
             {
+                _guid = new Guid(userDTO._guid),
                 _firstName = userDTO._firstName,
                 _lastName = userDTO._lastName,
                 _email = userDTO._email,
@@ -172,6 +173,7 @@ namespace AlarmClock.Models
                 user._alarmClocks.Add(new AlarmClock
                 {
                     IsAlarming = false,
+                    Guid = new Guid(acDTO._guid),
                     LastTriggerDate = acDTO._lastTriggerDate,
                     NextTriggerDate = acDTO._nextTriggerDate
                 });

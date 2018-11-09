@@ -72,6 +72,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
                         // fake DB delay
                         Thread.Sleep(500);
                     });
+                    var a = StationManager.CurrentUser.AlarmClocks;
                     StationManager.CurrentUser.AlarmClocks.RemoveAll(alarmClock => alarmClock.Guid == SelectedAlarmClock.Guid);
                     int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);
                     int newIndex = deletedAlarmClockIndex == 0 ? deletedAlarmClockIndex : deletedAlarmClockIndex - 1;
