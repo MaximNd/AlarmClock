@@ -15,7 +15,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
     {
         #region Fields
 
-        private DateTime _newDateTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day + 1, 0, 0, 0);
+        private DateTime _newDateTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 0, 0, 0);
         private string _selectedHour;
         private string _selectedMinute;
         private List<string> _hours = new List<string>();

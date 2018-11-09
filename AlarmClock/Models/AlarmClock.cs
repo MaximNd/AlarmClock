@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 
 namespace AlarmClock.Models
 {
@@ -27,7 +28,14 @@ namespace AlarmClock.Models
         public DateTime NextTriggerDate
         {
             get { return _nextTriggerDate; }
-            set { _nextTriggerDate = value; }
+            set
+            {
+                _nextTriggerDate = value;
+                if (_nextTriggerDate < DateTime.Now)
+                    _nextTriggerDate = _nextTriggerDate.AddDays((DateTime.Now - _nextTriggerDate).TotalDays);
+                if (_nextTriggerDate > DateTime.Now.AddDays(1))
+                    _nextTriggerDate = _nextTriggerDate.AddDays(-1);
+            }
         }
 
         public bool IsAlarming
@@ -59,6 +67,14 @@ namespace AlarmClock.Models
         public override string ToString()
         {
             return $"The alarm clock will trigger at {_nextTriggerDate}";
+        }
+
+        public void Alarm()
+        {
+            SystemSounds.Beep.Play();
+            IsAlarming = true;
+            LastTriggerDate = DateTime.Now;
+            NextTriggerDate = NextTriggerDate.AddDays(1);
         }
         #endregion
     }

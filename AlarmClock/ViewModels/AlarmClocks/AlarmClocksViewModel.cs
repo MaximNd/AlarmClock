@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -47,8 +48,8 @@ namespace AlarmClock.ViewModels.AlarmClocks
                             Thread.Sleep(500);
                         });
                         AlarmClockForView alarmClock = new AlarmClockForView(null, createAlarmClockViewModel.NewDateTime);
-                        StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
                         AlarmClocks.Add(alarmClock);
+                        StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
                         SelectedAlarmClock = alarmClock;
                         IsAlarmClockSelected = true;
                         LoaderManager.Instance.HideLoader();
@@ -137,17 +138,22 @@ namespace AlarmClock.ViewModels.AlarmClocks
             PropertyChanged += OnPropertyChanged;
             FillAlarmClocks();
             IsAlarmClockSelected = SelectedAlarmClock != null;
+
+            CheckAlarms();
+            
         }
         #endregion
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName == nameof(SelectedAlarmClock) ||
+                propertyChangedEventArgs.PropertyName == nameof(CheckAlarms) ||
                 propertyChangedEventArgs.PropertyName == nameof(_selectedAlarmClock))
             {
                 OnAlarmClockChanged(SelectedAlarmClock);
                 IsAlarmClockSelected = SelectedAlarmClock != null;
             }
         }
+
         public void FillAlarmClocks()
         {
             _alarmClocks = new ObservableCollection<AlarmClockForView>();
@@ -160,6 +166,42 @@ namespace AlarmClock.ViewModels.AlarmClocks
                 SelectedAlarmClock = AlarmClocks[0];
                 OnAlarmClockChanged(SelectedAlarmClock);
             }
+        }
+
+        private async void CheckAlarms()
+        {
+            AlarmClockForView alarmingClock = await Task.Run(() =>
+            {
+                Console.WriteLine("Cycle");
+                DateTime nowStart = DateTime.Now;
+                DateTime nowEnd = DateTime.Now.AddSeconds(5);
+                foreach (AlarmClockForView afc in AlarmClocks)
+                {
+                    if (nowStart < afc.AlarmClock.NextTriggerDate
+                        && nowEnd > afc.AlarmClock.NextTriggerDate)
+                    {
+                        return afc;
+                    }
+                    Console.WriteLine(nowStart - afc.AlarmClock.NextTriggerDate);
+                }
+                Thread.Sleep(100);
+                return null;
+            });
+
+            if (alarmingClock != null)
+            {
+                DoAlarm(alarmingClock);
+            }
+            CheckAlarms();
+
+        }
+
+        private void DoAlarm(AlarmClockForView alarmingClock)
+        {
+            SelectedAlarmClock = alarmingClock;
+            SelectedAlarmClock.Alarm();
+            
+            OnAlarmClockChanged(SelectedAlarmClock);
         }
 
         private void LogoutExecute(object obj)
@@ -175,6 +217,10 @@ namespace AlarmClock.ViewModels.AlarmClocks
         #region Loader
         internal event AlarmClockChangedHandler AlarmClockChanged;
         internal delegate void AlarmClockChangedHandler(AlarmClockForView alarmClock);
+        internal void AlarmingHandler(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged();
+        }
 
         internal virtual void OnAlarmClockChanged(AlarmClockForView alarmClock)
         {

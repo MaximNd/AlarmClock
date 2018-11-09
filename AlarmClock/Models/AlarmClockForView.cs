@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Media;
 using System.Runtime.CompilerServices;
 using AlarmClock.Properties;
 
@@ -65,6 +66,16 @@ namespace AlarmClock.Models
             }
         }
         #endregion
+
+
+        public void Alarm()
+        {
+            SystemSounds.Beep.Play();
+            IsAlarming = true;
+            LastTriggerDate = DateTime.Now;
+            NextTriggerDate = NextTriggerDate.AddDays(1);
+        }
+
         
         #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

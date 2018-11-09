@@ -75,6 +75,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             {
                 return _testAlarm ?? (_testAlarm = new RelayCommand<object>((object o) =>
                 {
+                    SystemSounds.Asterisk.Play();
                     IsAlarming = true;
                     _currentAlarmClock.NextTriggerDate = _currentAlarmClock.NextTriggerDate.AddDays(1);
                     _currentAlarmClock.LastTriggerDate = DateTime.Now;
@@ -172,7 +173,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             int minute = _currentAlarmClock.NextTriggerDate.Minute;
             _selectedHour = TimeGenerator.GetFormattedTime(hour);
             _selectedMinute = TimeGenerator.GetFormattedTime(minute);
-            IsAlarming = false;
+            IsAlarming = _currentAlarmClock.IsAlarming;
         }
 
         #region EventsAndHandlers

@@ -44,7 +44,7 @@
         
         <StackPanel Visibility="{ Binding Path=IsAlarmClockSelected, Converter={StaticResource Converter} }"
                     Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
-            <alarmClock:AlarmClockView x:Name="AlarmClockView" />
+         <alarmClock:AlarmClockView x:Name="AlarmClockView"/>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Horizontal">
             <Button Width="100" HorizontalAlignment="Stretch" Command="{Binding LogoutCommand}">
