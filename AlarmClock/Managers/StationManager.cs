@@ -5,34 +5,36 @@ using System.Linq;
 using System.Windows;
 using System.Xml.Serialization;
 using AlarmClock.Models;
+using AlarmClock.Tools;
 using AlarmClock.Tools.Serialization;
 
 namespace AlarmClock.Managers
 {
     public static class StationManager
     {
-        private static readonly string dataFile = Directory.GetCurrentDirectory() + @"\data.xml";
+        private static readonly string DataFile = FileFolderHelper.DataFilePath;
 
         public static User CurrentUser { get; set; } = null;
 
         public static void ImportData()
         {
-            if(File.Exists(dataFile))
+            if (!FileFolderHelper.CheckAndCreateFile(DataFile))
             {
-                TextReader reader = null;
-                try
-                {
-                    reader = new StreamReader(dataFile);
-                    var serializer = new XmlSerializer(typeof(Tools.StoredData));
-                    Tools.StoredData dataToStore = (Tools.StoredData)serializer.Deserialize(reader);
-                    DBManager.Users = new List<User>(Array.ConvertAll(dataToStore.users, user => (User)user));
-                    CurrentUser = DBManager.Users.FirstOrDefault(u => u.Login.Equals(dataToStore.currentUserLogin));
-                }
-                finally
-                {
-                    if (reader != null)
-                        reader.Close();
-                }
+                ExportData();
+            }
+            TextReader reader = null;
+            try
+            {
+                reader = new StreamReader(DataFile);
+                var serializer = new XmlSerializer(typeof(StoredData));
+                StoredData dataToStore = (StoredData)serializer.Deserialize(reader);
+                DBManager.Users = new List<User>(Array.ConvertAll(dataToStore.users, user => (User)user));
+                CurrentUser = DBManager.Users.FirstOrDefault(u => u.Login.Equals(dataToStore.currentUserLogin));
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
             }
         }
 
@@ -61,7 +63,7 @@ namespace AlarmClock.Managers
             try
             {
                 var serializer = new XmlSerializer(typeof(Tools.StoredData));
-                writer = new StreamWriter(dataFile, false);
+                writer = new StreamWriter(DataFile, false);
                 serializer.Serialize(writer, dataToStore);
             }
             finally
