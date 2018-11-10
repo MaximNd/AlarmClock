@@ -17,6 +17,12 @@ namespace AlarmClock.Tools
             Path.Combine(ClientFolderPath, "Data");
         internal static readonly string DataFilePath =
             Path.Combine(DataFolderPath, "data.xml");
+        internal static readonly string AssetsFolderPath =
+            Path.Combine(Environment.CurrentDirectory, @"Assets\");
+        internal static readonly string SoundsFolderPath =
+            Path.Combine(AssetsFolderPath, "Sounds");
+        internal static readonly string AlarmSoundFilepath =
+            Path.Combine(SoundsFolderPath, "alarm_sound.wav");
         internal static readonly string LastUserFilePath =
             Path.Combine(ClientFolderPath, "LastUser.alarmclock");
 

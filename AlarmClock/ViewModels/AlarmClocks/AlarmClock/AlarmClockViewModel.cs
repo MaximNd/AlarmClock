@@ -25,7 +25,6 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         private List<string> _minutes = new List<string>();
         #region Commands
         private ICommand _saveNewTime;
-        private ICommand _testAlarm;
         private ICommand _snooze;
         #endregion
         #endregion
@@ -64,14 +63,6 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                     }
                     LoaderManager.Instance.HideLoader();
                 }));
-            }
-        }
-
-        public ICommand TestAlarm
-        {
-            get
-            {
-                return _testAlarm ?? (_testAlarm = new RelayCommand<object>(TestAlarmExecute));
             }
         }
 
@@ -189,18 +180,10 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             return true;
         }
 
-        private void TestAlarmExecute(object obj)
-        {
-            SystemSounds.Asterisk.Play();
-            IsAlarming = true;
-            CurrentAlarmClock.NextTriggerDate = CurrentAlarmClock.NextTriggerDate.AddDays(1);
-            CurrentAlarmClock.LastTriggerDate = DateTime.Now;
-            OnPropertyChanged(nameof(CurrentAlarmClock));
-        }
-
         private void SnoozeExecute(object obj)
         {
             IsAlarming = false;
+            CurrentAlarmClock.NextTriggerDate = CurrentAlarmClock.NextTriggerDate.AddDays(1);
             OnPropertyChanged(nameof(CurrentAlarmClock));
         }
 

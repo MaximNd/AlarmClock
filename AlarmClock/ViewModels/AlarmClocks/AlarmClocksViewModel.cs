@@ -88,6 +88,17 @@ namespace AlarmClock.ViewModels.AlarmClocks
             }
         }
 
+        public ICommand TestAlarm
+        {
+            get
+            {
+                return new RelayCommand<object>((o) =>
+                {
+                    DoAlarm(SelectedAlarmClock);
+                });
+            }
+        }
+
         #endregion
 
         public ObservableCollection<AlarmClockForView> AlarmClocks
@@ -156,36 +167,35 @@ namespace AlarmClock.ViewModels.AlarmClocks
 
         private async void CheckAlarms()
         {
-            AlarmClockForView alarmingClock = await Task.Run(() =>
+            while (true)
             {
-                Console.WriteLine("Cycle");
-                DateTime nowStart = DateTime.Now;
-                DateTime nowEnd = DateTime.Now.AddSeconds(5);
-                foreach (AlarmClockForView afc in AlarmClocks)
+                AlarmClockForView alarmClockForView = await Task.Run(() =>
                 {
-                    if (nowStart < afc.AlarmClock.NextTriggerDate
-                        && nowEnd > afc.AlarmClock.NextTriggerDate)
+                    while (true)
                     {
-                        return afc;
+                        DateTime nowStart = DateTime.Now;
+                        DateTime nowEnd = DateTime.Now.AddSeconds(5);
+                        foreach (AlarmClockForView afc in AlarmClocks)
+                        {
+                            if (!afc.IsAlarming && nowStart < afc.AlarmClock.NextTriggerDate
+                                && nowEnd > afc.AlarmClock.NextTriggerDate)
+                            {
+                                return afc;
+                            }
+                            Console.WriteLine(nowStart - afc.AlarmClock.NextTriggerDate);
+                        }
+                        Thread.Sleep(1000);
                     }
-                    Console.WriteLine(nowStart - afc.AlarmClock.NextTriggerDate);
-                }
-                Thread.Sleep(100);
-                return null;
-            });
-
-            if (alarmingClock != null)
-            {
-                DoAlarm(alarmingClock);
+                });
+                alarmClockForView.AlarmClock.Alarm();
+                SelectedAlarmClock = alarmClockForView;
             }
-            CheckAlarms();
-
         }
 
         private void DoAlarm(AlarmClockForView alarmingClock)
         {
             SelectedAlarmClock = alarmingClock;
-            SelectedAlarmClock.Alarm();
+            SelectedAlarmClock.AlarmClock.Alarm();
             
             OnAlarmClockChanged(SelectedAlarmClock);
         }

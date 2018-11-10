@@ -1,5 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Media;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using AlarmClock.Tools;
 
 namespace AlarmClock.Models
 {
@@ -71,7 +76,16 @@ namespace AlarmClock.Models
 
         public void Alarm()
         {
-            SystemSounds.Beep.Play();
+            Task.Run(() =>
+            {
+                SoundPlayer player = new SoundPlayer(FileFolderHelper.AlarmSoundFilepath);
+                player.PlayLooping();
+                while (IsAlarming)
+                {
+                    Thread.Sleep(100);
+                }
+                player.Stop();
+            });
             IsAlarming = true;
             LastTriggerDate = DateTime.Now;
             NextTriggerDate = NextTriggerDate.AddDays(1);

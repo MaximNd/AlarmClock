@@ -66,16 +66,6 @@ namespace AlarmClock.Models
             }
         }
         #endregion
-
-
-        public void Alarm()
-        {
-            SystemSounds.Beep.Play();
-            IsAlarming = true;
-            LastTriggerDate = DateTime.Now;
-            NextTriggerDate = NextTriggerDate.AddDays(1);
-        }
-
         
         #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
