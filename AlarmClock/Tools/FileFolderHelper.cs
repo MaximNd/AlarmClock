@@ -13,12 +13,21 @@ namespace AlarmClock.Tools
             Path.Combine(ClientFolderPath, "Log");
         internal static readonly string LogFilepath = Path.Combine(LogFolderPath,
             "App_" + DateTime.Now.ToString("YYYY_MM_DD") + ".txt");
-        internal static readonly string StorageFilePath =
-            Path.Combine(ClientFolderPath, "Storage.alarmclock");
+        internal static readonly string DataFolderPath = 
+            Path.Combine(ClientFolderPath, "Data");
+        internal static readonly string DataFilePath =
+            Path.Combine(DataFolderPath, "data.xml");
         internal static readonly string LastUserFilePath =
             Path.Combine(ClientFolderPath, "LastUser.alarmclock");
-        internal static void CheckAndCreateFile(string filePath)
+
+        /// <summary>
+        /// Return false if file wasn't exist before
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        internal static bool CheckAndCreateFile(string filePath)
         {
+            bool isExistBefore = true;
             try
             {
                 FileInfo file = new FileInfo(filePath);
@@ -26,15 +35,19 @@ namespace AlarmClock.Tools
                 {
                     file.Directory.Create();
                 }
+
                 if (!file.Exists)
                 {
                     file.Create().Close();
+                    isExistBefore = false;
                 }
             }
             catch (Exception)
             {
                 throw;
             }
+
+            return isExistBefore;
         }
     }
 }
