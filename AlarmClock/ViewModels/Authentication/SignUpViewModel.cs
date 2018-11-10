@@ -10,6 +10,7 @@ using AlarmClock.Managers;
 using AlarmClock.Models;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace AlarmClock.ViewModels.Authentication
 {

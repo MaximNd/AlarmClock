@@ -11,6 +11,7 @@ using AlarmClock.Managers;
 using AlarmClock.Models;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
 {
@@ -20,7 +21,6 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         private AlarmClockForView _currentAlarmClock;
         private string _selectedHour;
         private string _selectedMinute;
-        private bool _isClockPresent;
         private List<string> _hours = new List<string>();
         private List<string> _minutes = new List<string>();
         #region Commands
@@ -40,30 +40,28 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                 return _saveNewTime ?? (_saveNewTime = new RelayCommand<object>(async (object o) =>
                 {
                     LoaderManager.Instance.ShowLoader();
-                    int currentNextYear = _currentAlarmClock.NextTriggerDate.Year;
-                    int currentNextMonth = _currentAlarmClock.NextTriggerDate.Month;
-                    int currentNextDay = _currentAlarmClock.NextTriggerDate.Day;
+                    DateTime beforeDateTime = CurrentAlarmClock.NextTriggerDate;
+                    int currentNextYear = beforeDateTime.Year;
+                    int currentNextMonth = beforeDateTime.Month;
+                    int currentNextDay = beforeDateTime.Day;
                     int updatedNextHour = Int32.Parse(SelectedHour);
                     int updatedNexMinute = Int32.Parse(SelectedMinute);
                     DateTime dateTime = new DateTime(currentNextYear, currentNextMonth, currentNextDay, updatedNextHour, updatedNexMinute, 0);
-                    foreach (Models.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
-                    {
-                        if (alarmClock.Guid != _currentAlarmClock.AlarmClock.Guid && alarmClock.NextTriggerDate == dateTime)
-                        {
-                            SystemSounds.Beep.Play();
-                            MessageBox.Show("The alarm time must be unique.");
-                            return;
-                        }
-                    }
                     await Task.Run(() =>
                     {
                         // TODO delete this later
                         // fake DB delay
                         Thread.Sleep(500);
                     });
-                    Logger.Log($"User: {StationManager.CurrentUser} updated the alarm clock. Time that was Before: {_currentAlarmClock.AlarmClock.NextTriggerDate}, Time After: {dateTime}");
-                    _currentAlarmClock.NextTriggerDate = dateTime;
-                    OnPropertyChanged(nameof(_currentAlarmClock));
+                    if (UpdateTime(dateTime))
+                    {
+                        Logger.Log($"User: {StationManager.CurrentUser} updated the alarm clock. Time that was Before: {beforeDateTime}, Time After: {dateTime}");
+                    }
+                    else
+                    {
+                        SystemSounds.Beep.Play();
+                        MessageBox.Show("The alarm time must be unique.");
+                    }
                     LoaderManager.Instance.HideLoader();
                 }));
             }
@@ -73,14 +71,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         {
             get
             {
-                return _testAlarm ?? (_testAlarm = new RelayCommand<object>((object o) =>
-                {
-                    SystemSounds.Asterisk.Play();
-                    IsAlarming = true;
-                    _currentAlarmClock.NextTriggerDate = _currentAlarmClock.NextTriggerDate.AddDays(1);
-                    _currentAlarmClock.LastTriggerDate = DateTime.Now;
-                    OnPropertyChanged(nameof(_currentAlarmClock));
-                }));
+                return _testAlarm ?? (_testAlarm = new RelayCommand<object>(TestAlarmExecute));
             }
         }
 
@@ -88,15 +79,18 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         {
             get
             {
-                return _snooze ?? (_snooze = new RelayCommand<object>((object o) =>
-                {
-                    IsAlarming = false;
-                    OnPropertyChanged(nameof(_currentAlarmClock));
-                }));
+                return _snooze ?? (_snooze = new RelayCommand<object>(SnoozeExecute));
             }
         }
 
         #endregion
+
+        public AlarmClockForView CurrentAlarmClock
+        {
+            get { return _currentAlarmClock; }
+            set { _currentAlarmClock = value; }
+        }
+
         public List<string> Hours
         {
             get { return _hours; }
@@ -130,37 +124,27 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         public bool IsAlarming
         {
             get {
-                if (!this._isClockPresent)
+                if (!IsClockPresent)
                     return false;
-                return _currentAlarmClock.IsAlarming;
+                return CurrentAlarmClock.IsAlarming;
             }
             set
             {
-                _currentAlarmClock.IsAlarming = value;
+                CurrentAlarmClock.IsAlarming = value;
                 OnPropertyChanged();
             }
         }
         internal bool IsClockPresent
         {
-            get { return this._isClockPresent; }
-            set
-            {
-                this._isClockPresent = value;
-                OnPropertyChanged();
-            }
+            get { return CurrentAlarmClock != null; }
         }
         #endregion
 
         #region Constructor
         public AlarmClockViewModel(AlarmClockForView alarmClock)
         {
-            if(alarmClock == null)
-            {
-                IsClockPresent = false;
-                return;
-            }
-            IsClockPresent = true;
-            _currentAlarmClock = alarmClock;
+            if(alarmClock == null) return;
+            CurrentAlarmClock = alarmClock;
             Initialize();
         }
         #endregion
@@ -169,11 +153,55 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         {
             Hours = TimeGenerator.GenerateHours();
             Minutes = TimeGenerator.GenerateMinutes();
-            int hour = _currentAlarmClock.NextTriggerDate.Hour;
-            int minute = _currentAlarmClock.NextTriggerDate.Minute;
+            int hour = CurrentAlarmClock.NextTriggerDate.Hour;
+            int minute = CurrentAlarmClock.NextTriggerDate.Minute;
             _selectedHour = TimeGenerator.GetFormattedTime(hour);
             _selectedMinute = TimeGenerator.GetFormattedTime(minute);
-            IsAlarming = _currentAlarmClock.IsAlarming;
+            IsAlarming = CurrentAlarmClock.IsAlarming;
+        }
+
+        private bool UpdateTime(DateTime dateTime)
+        {
+            if (CheckUniqueness(dateTime))
+            {
+                CurrentAlarmClock.NextTriggerDate = dateTime;
+                OnPropertyChanged(nameof(CurrentAlarmClock));
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool CheckUniqueness(DateTime dateTime)
+        {
+            foreach (Models.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
+            {
+                if (alarmClock.Guid == CurrentAlarmClock.AlarmClock.Guid)
+                {
+                    continue;
+                }
+                if (alarmClock.NextTriggerDate == dateTime)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void TestAlarmExecute(object obj)
+        {
+            SystemSounds.Asterisk.Play();
+            IsAlarming = true;
+            CurrentAlarmClock.NextTriggerDate = CurrentAlarmClock.NextTriggerDate.AddDays(1);
+            CurrentAlarmClock.LastTriggerDate = DateTime.Now;
+            OnPropertyChanged(nameof(CurrentAlarmClock));
+        }
+
+        private void SnoozeExecute(object obj)
+        {
+            IsAlarming = false;
+            OnPropertyChanged(nameof(CurrentAlarmClock));
         }
 
         #region EventsAndHandlers

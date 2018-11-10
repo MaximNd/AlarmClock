@@ -10,6 +10,7 @@ using AlarmClock.Models;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
 using AlarmClock.Views.AlarmClocks;
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace AlarmClock.ViewModels.AlarmClocks
 {
@@ -47,11 +48,9 @@ namespace AlarmClock.ViewModels.AlarmClocks
                             // fake DB delay
                             Thread.Sleep(500);
                         });
+                        
                         AlarmClockForView alarmClock = new AlarmClockForView(null, createAlarmClockViewModel.NewDateTime);
-                        AlarmClocks.Add(alarmClock);
-                        StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
-                        SelectedAlarmClock = alarmClock;
-                        IsAlarmClockSelected = true;
+                        AddNewAlarmClock(alarmClock);
                         LoaderManager.Instance.HideLoader();
                         Logger.Log($"User: {StationManager.CurrentUser} create new AlarmClock: {alarmClock.AlarmClock}");
                     }
@@ -73,22 +72,9 @@ namespace AlarmClock.ViewModels.AlarmClocks
                         // fake DB delay
                         Thread.Sleep(500);
                     });
-                    var a = StationManager.CurrentUser.AlarmClocks;
-                    StationManager.CurrentUser.AlarmClocks.RemoveAll(alarmClock => alarmClock.Guid == SelectedAlarmClock.Guid);
-                    int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);
-                    int newIndex = deletedAlarmClockIndex == 0 ? deletedAlarmClockIndex : deletedAlarmClockIndex - 1;
-                    Logger.Log($"User: {StationManager.CurrentUser} delete AlarmClock: {SelectedAlarmClock.AlarmClock}");
-                    AlarmClocks.Remove(SelectedAlarmClock);
-
-                    if (AlarmClocks.Count != 0)
-                    {
-                        SelectedAlarmClock = AlarmClocks[newIndex];
-                    }
-                    else
-                    {
-                        SelectedAlarmClock = null;
-                        IsAlarmClockSelected = false;
-                    }
+                    Models.AlarmClock alarmClockToDelete = SelectedAlarmClock.AlarmClock;
+                    DeleteSelectedAlarmClock();
+                    Logger.Log($"User: {StationManager.CurrentUser} delete AlarmClock: {alarmClockToDelete}");
                     LoaderManager.Instance.HideLoader();
                 }));
             }
@@ -202,6 +188,31 @@ namespace AlarmClock.ViewModels.AlarmClocks
             SelectedAlarmClock.Alarm();
             
             OnAlarmClockChanged(SelectedAlarmClock);
+        }
+
+        private void AddNewAlarmClock(AlarmClockForView alarmClock)
+        {
+            AlarmClocks.Add(alarmClock);
+            StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
+            SelectedAlarmClock = alarmClock;
+            IsAlarmClockSelected = true;
+        }
+
+        private void DeleteSelectedAlarmClock()
+        {
+            StationManager.CurrentUser.AlarmClocks.RemoveAll(alarmClock => alarmClock.Guid == SelectedAlarmClock.AlarmClock.Guid);
+            int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);
+            int newIndex = deletedAlarmClockIndex == 0 ? deletedAlarmClockIndex : deletedAlarmClockIndex - 1;
+            AlarmClocks.Remove(SelectedAlarmClock);
+            if (AlarmClocks.Count != 0)
+            {
+                SelectedAlarmClock = AlarmClocks[newIndex];
+            }
+            else
+            {
+                SelectedAlarmClock = null;
+                IsAlarmClockSelected = false;
+            }
         }
 
         private void LogoutExecute(object obj)
