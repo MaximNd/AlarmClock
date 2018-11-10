@@ -37,6 +37,18 @@ namespace Tests
             alarmClockViewModel.CurrentAlarmClock = null;
             Assert.IsFalse(alarmClockViewModel.IsClockPresent);
             Assert.IsNull(alarmClockViewModel.CurrentAlarmClock);
+
+            AlarmClockForView alarmClockForView2 = new AlarmClockForView(null, now);
+            AlarmClockViewModel alarmClockViewModel2 = new AlarmClockViewModel(null);
+
+            Assert.IsFalse(alarmClockViewModel2.IsClockPresent);
+            Assert.IsNull(alarmClockViewModel2.CurrentAlarmClock);
+            
+
+            alarmClockViewModel2.CurrentAlarmClock = alarmClockForView2;
+
+            Assert.IsTrue(alarmClockViewModel2.IsClockPresent);
+            Assert.AreSame(alarmClockViewModel2.CurrentAlarmClock.AlarmClock, alarmClockForView2.AlarmClock);
         }
 
         [TestMethod]
@@ -76,22 +88,6 @@ namespace Tests
             Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate.Hour, newDateTime.Hour);
             Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate.Minute, newDateTime.Minute);
             Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate.Second, newDateTime.Second);
-        }
-
-
-
-        [TestMethod]
-        public void CheckTriggeringAlarmClock()
-        {
-            DateTime now = DateTime.Now;
-            AlarmClockForView alarmClockForView = new AlarmClockForView(null, now);
-            AlarmClockViewModel alarmClockViewModel = new AlarmClockViewModel(alarmClockForView);
-
-            PrivateObject obj = new PrivateObject(alarmClockViewModel);
-            obj.Invoke("TestAlarmExecute", (object) null);
-
-            Assert.IsTrue(alarmClockForView.IsAlarming);
-            Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate, now.AddDays(1));
         }
 
         [TestMethod]
