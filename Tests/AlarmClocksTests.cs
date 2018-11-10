@@ -124,7 +124,7 @@ namespace Tests
 
             Assert.AreEqual(alarmClocksViewModel.SelectedAlarmClock.AlarmClock.NextTriggerDate.Year, beforeYear);
             Assert.AreEqual(alarmClocksViewModel.SelectedAlarmClock.AlarmClock.NextTriggerDate.Month, beforeMonth);
-            Assert.AreEqual(alarmClocksViewModel.SelectedAlarmClock.AlarmClock.NextTriggerDate.Day, beforeDay + 1);
+            Assert.IsTrue(alarmClocksViewModel.SelectedAlarmClock.AlarmClock.NextTriggerDate.Day == beforeDay + 1 || alarmClocksViewModel.SelectedAlarmClock.AlarmClock.NextTriggerDate.Day == beforeDay);
             Assert.AreEqual(alarmClocksViewModel.SelectedAlarmClock.AlarmClock.NextTriggerDate.Hour, beforeHour);
             Assert.AreEqual(alarmClocksViewModel.SelectedAlarmClock.AlarmClock.NextTriggerDate.Minute, beforeMinute);
             Assert.AreEqual(alarmClocksViewModel.SelectedAlarmClock.AlarmClock.NextTriggerDate.Second, beforeSecond);
