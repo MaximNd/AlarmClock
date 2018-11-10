@@ -1,10 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Media;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using AlarmClock.Tools;
 
 namespace AlarmClock.Models
 {
@@ -58,7 +52,7 @@ namespace AlarmClock.Models
             _nextTriggerDate = nextTriggerDate;
             _isAlarming = false;
         }
-
+        #endregion
         public AlarmClock()
         {
             _guid = Guid.NewGuid();
@@ -73,23 +67,5 @@ namespace AlarmClock.Models
         {
             return $"The alarm clock will trigger at {_nextTriggerDate}";
         }
-
-        public void Alarm()
-        {
-            Task.Run(() =>
-            {
-                SoundPlayer player = new SoundPlayer(FileFolderHelper.AlarmSoundFilepath);
-                player.PlayLooping();
-                while (IsAlarming)
-                {
-                    Thread.Sleep(100);
-                }
-                player.Stop();
-            });
-            IsAlarming = true;
-            LastTriggerDate = DateTime.Now;
-            NextTriggerDate = NextTriggerDate.AddDays(1);
-        }
-        #endregion
     }
 }

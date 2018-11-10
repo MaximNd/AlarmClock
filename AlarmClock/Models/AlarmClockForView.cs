@@ -2,7 +2,10 @@
 using System.ComponentModel;
 using System.Media;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using AlarmClock.Properties;
+using AlarmClock.Tools;
 
 namespace AlarmClock.Models
 {
@@ -66,7 +69,24 @@ namespace AlarmClock.Models
             }
         }
         #endregion
-        
+
+        public void Alarm()
+        {
+            Task.Run(() =>
+            {
+                SoundPlayer player = new SoundPlayer(FileFolderHelper.AlarmSoundFilepath);
+                player.PlayLooping();
+                while (IsAlarming)
+                {
+                    Thread.Sleep(100);
+                }
+                player.Stop();
+            });
+            IsAlarming = true;
+            LastTriggerDate = DateTime.Now;
+            NextTriggerDate = NextTriggerDate.AddDays(1);
+        }
+
         #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]

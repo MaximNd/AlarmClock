@@ -187,7 +187,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
                         Thread.Sleep(1000);
                     }
                 });
-                alarmClockForView.AlarmClock.Alarm();
+                alarmClockForView.Alarm();
                 SelectedAlarmClock = alarmClockForView;
             }
         }
@@ -195,7 +195,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
         private void DoAlarm(AlarmClockForView alarmingClock)
         {
             SelectedAlarmClock = alarmingClock;
-            SelectedAlarmClock.AlarmClock.Alarm();
+            SelectedAlarmClock.Alarm();
             
             OnAlarmClockChanged(SelectedAlarmClock);
         }
