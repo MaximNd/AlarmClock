@@ -4,6 +4,8 @@ using System.Media;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using AlarmClock.Managers;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
 
@@ -76,11 +78,12 @@ namespace AlarmClock.Models
             {
                 SoundPlayer player = new SoundPlayer(FileFolderHelper.AlarmSoundFilepath);
                 player.PlayLooping();
-                while (IsAlarming)
+                while (StationManager.CurrentUser != null && IsAlarming)
                 {
                     Thread.Sleep(100);
                 }
                 player.Stop();
+                IsAlarming = false;
             });
             IsAlarming = true;
             LastTriggerDate = DateTime.Now;

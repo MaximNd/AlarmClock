@@ -183,7 +183,6 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
         private void SnoozeExecute(object obj)
         {
             IsAlarming = false;
-            CurrentAlarmClock.NextTriggerDate = CurrentAlarmClock.NextTriggerDate.AddDays(1);
             OnPropertyChanged(nameof(CurrentAlarmClock));
         }
 
