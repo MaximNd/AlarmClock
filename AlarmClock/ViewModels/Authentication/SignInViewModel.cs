@@ -78,11 +78,18 @@ namespace AlarmClock.ViewModels.Authentication
         #region ConstructorAndInit
         internal SignInViewModel()
         {
+            if(StationManager.CurrentUser!=null)
+            {
+                Login = StationManager.CurrentUser.Login;
+            }
         }
         #endregion
         
         private void SignUpExecute(object obj)
         {
+            Login = "";
+            Password = "";
+            OnPropertyChanged();
             NavigationManager.Instance.Navigate(ModesEnum.SingUp);
         }
 
@@ -135,6 +142,8 @@ namespace AlarmClock.ViewModels.Authentication
             LoaderManager.Instance.HideLoader();
             if (res)
             {
+                Password = "";
+                OnPropertyChanged();
                 Logger.Log($"User: {StationManager.CurrentUser} logged in.");
                 NavigationManager.Instance.Navigate(ModesEnum.AlarmsClocks);
             }

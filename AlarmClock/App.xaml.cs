@@ -15,10 +15,11 @@ namespace AlarmClock
 
         private void OnExit(object sender, ExitEventArgs e)
         {
-            StationManager.CurrentUser.AlarmClocks.ForEach(AlarmClock =>
-            {
-                AlarmClock.IsAlarming = false;
-            });
+            if(StationManager.CurrentUser!= null)
+                StationManager.CurrentUser.AlarmClocks.ForEach(AlarmClock =>
+                {
+                    AlarmClock.IsAlarming = false;
+                });
             StationManager.CloseApp();
         }
     }
