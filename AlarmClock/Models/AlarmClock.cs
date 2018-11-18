@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.ModelConfiguration;
 
 namespace AlarmClock.Models
 {
@@ -9,6 +10,8 @@ namespace AlarmClock.Models
         private DateTime? _lastTriggerDate;
         private DateTime _nextTriggerDate;
         private bool _isAlarming;
+        private Guid _userGuid;
+        private User _user;
         #endregion
 
         #region Fields
@@ -43,6 +46,18 @@ namespace AlarmClock.Models
             get { return _isAlarming; }
             set { _isAlarming = value; }
         }
+
+        public Guid UserGuid
+        {
+            get { return _userGuid; }
+            private set { _userGuid = value; }
+        }
+        
+        public User User
+        {
+            get { return _user; }
+            private set { _user = value; }
+        }
         #endregion
 
         #region Constructor
@@ -67,6 +82,33 @@ namespace AlarmClock.Models
         public override string ToString()
         {
             return $"The alarm clock will trigger at {_nextTriggerDate}";
+        }
+
+        #region EntityFrameworkConfiguration
+        public class AlarmClockEntityConfiguration : EntityTypeConfiguration<AlarmClock>
+        {
+            public AlarmClockEntityConfiguration()
+            {
+                ToTable("AlarmClocks");
+                HasKey(s => s.Guid);
+
+                Property(p => p.Guid)
+                    .HasColumnName("Guid")
+                    .IsRequired();
+                Property(p => p.LastTriggerDate)
+                    .HasColumnName("LastTriggerDate")
+                    .IsRequired();
+                Property(s => s.NextTriggerDate)
+                    .HasColumnName("NextTriggerDate")
+                    .IsRequired();
+                Ignore(p => p.IsAlarming);
+            }
+        }
+        #endregion
+
+        public void DeleteDatabaseValues()
+        {
+            _user = null;
         }
     }
 }

@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlarmClock", "AlarmClock\Al
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{8EFF6CB1-1D57-46EF-8ED6-5D35D70465AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBAdapter", "DBAdapter\DBAdapter.csproj", "{5FB2C777-9A9A-4F71-AF8F-8634E45EA29D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{8EFF6CB1-1D57-46EF-8ED6-5D35D70465AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EFF6CB1-1D57-46EF-8ED6-5D35D70465AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EFF6CB1-1D57-46EF-8ED6-5D35D70465AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB2C777-9A9A-4F71-AF8F-8634E45EA29D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB2C777-9A9A-4F71-AF8F-8634E45EA29D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB2C777-9A9A-4F71-AF8F-8634E45EA29D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB2C777-9A9A-4F71-AF8F-8634E45EA29D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

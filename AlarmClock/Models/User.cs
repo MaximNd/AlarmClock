@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration;
 using System.Xml.Serialization;
 using AlarmClock.Tools;
 using AlarmClock.Tools.Serialization;
@@ -9,11 +10,17 @@ namespace AlarmClock.Models
     public class User
     {
         #region Const
-        private const string PrivateKey = "<RSAKeyValue><Modulus>zO+HxK436A49pUWsqK/IWZtH5shNxooQaTWwy53gSsPd5ARg3JlLCoylHTr6sVYtbRUMMr1InMLZtDK1uwh1SUlgw7rHECLB0MsNRN1wrEf5rCtqDNn76EMkrRYIIQ+2Ke8Ff3mHSXhcPQZNgcK5YV7YljEdKeKYB1OlM8Jmvsk=</Modulus><Exponent>AQAB</Exponent><P>/1bVII1govnNGwEQ8V5RwhKthICJt16ZT/Xn5Gc2mQfFiIUguJ26JfHpwei4FG8jB8Xw7vczrTgH6yT2O9LN7w==</P><Q>zXdN8Atku/5qUAOxSYMmVOhRcQ9b0Qrb+he5ZUnbmQWXFXvZS6GNksNoHodQqjFdRPPggBLlTubB9ziT76v2xw==</Q><DP>ZDk1Fr3nfJEIjNzyRYt8E+045pV9eNhM3THsf55zs8V1J4z5tv1SH6rA0jgCaSLmYRq041dslUU09ntfm0O3SQ==</DP><DQ>hDBhoDJ0WM7SLzBw+065dp8Q5qBu/gryg/CHgrcF5WlHTrcjkhkaMHYvopSEPTsNOrN8mGmPxjeISznHU8dbOQ==</DQ><InverseQ>CZN3/p7d2FAtnVAOOHHylZECm0e9ZevEIHHYctpMlRpppysZs+JdUT2m3l891yJ74cJv9PJQ8DGfNN7Tc/CJhg==</InverseQ><D>ITCx9mKY31ZfGYM9QVymwAxsCq5qGjuGCOQPLAr3pmQubZ1f6ppREvZQT3mb3Fiuprn/7b/GIM1V4N9Nm2r1Q4yjWq31LVqkLdjlx/J36uX8eST9ndySMViyKNEBUIEJs6bpaoviC5Z0fCT3x3+oX9tFbGxaFiSdghv0lTzBeTk=</D></RSAKeyValue>";
-        private const string PublicKey = "<RSAKeyValue><Modulus>zO+HxK436A49pUWsqK/IWZtH5shNxooQaTWwy53gSsPd5ARg3JlLCoylHTr6sVYtbRUMMr1InMLZtDK1uwh1SUlgw7rHECLB0MsNRN1wrEf5rCtqDNn76EMkrRYIIQ+2Ke8Ff3mHSXhcPQZNgcK5YV7YljEdKeKYB1OlM8Jmvsk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
+
+        private const string PrivateKey =
+            "<RSAKeyValue><Modulus>zO+HxK436A49pUWsqK/IWZtH5shNxooQaTWwy53gSsPd5ARg3JlLCoylHTr6sVYtbRUMMr1InMLZtDK1uwh1SUlgw7rHECLB0MsNRN1wrEf5rCtqDNn76EMkrRYIIQ+2Ke8Ff3mHSXhcPQZNgcK5YV7YljEdKeKYB1OlM8Jmvsk=</Modulus><Exponent>AQAB</Exponent><P>/1bVII1govnNGwEQ8V5RwhKthICJt16ZT/Xn5Gc2mQfFiIUguJ26JfHpwei4FG8jB8Xw7vczrTgH6yT2O9LN7w==</P><Q>zXdN8Atku/5qUAOxSYMmVOhRcQ9b0Qrb+he5ZUnbmQWXFXvZS6GNksNoHodQqjFdRPPggBLlTubB9ziT76v2xw==</Q><DP>ZDk1Fr3nfJEIjNzyRYt8E+045pV9eNhM3THsf55zs8V1J4z5tv1SH6rA0jgCaSLmYRq041dslUU09ntfm0O3SQ==</DP><DQ>hDBhoDJ0WM7SLzBw+065dp8Q5qBu/gryg/CHgrcF5WlHTrcjkhkaMHYvopSEPTsNOrN8mGmPxjeISznHU8dbOQ==</DQ><InverseQ>CZN3/p7d2FAtnVAOOHHylZECm0e9ZevEIHHYctpMlRpppysZs+JdUT2m3l891yJ74cJv9PJQ8DGfNN7Tc/CJhg==</InverseQ><D>ITCx9mKY31ZfGYM9QVymwAxsCq5qGjuGCOQPLAr3pmQubZ1f6ppREvZQT3mb3Fiuprn/7b/GIM1V4N9Nm2r1Q4yjWq31LVqkLdjlx/J36uX8eST9ndySMViyKNEBUIEJs6bpaoviC5Z0fCT3x3+oX9tFbGxaFiSdghv0lTzBeTk=</D></RSAKeyValue>";
+
+        private const string PublicKey =
+            "<RSAKeyValue><Modulus>zO+HxK436A49pUWsqK/IWZtH5shNxooQaTWwy53gSsPd5ARg3JlLCoylHTr6sVYtbRUMMr1InMLZtDK1uwh1SUlgw7rHECLB0MsNRN1wrEf5rCtqDNn76EMkrRYIIQ+2Ke8Ff3mHSXhcPQZNgcK5YV7YljEdKeKYB1OlM8Jmvsk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
+
         #endregion
 
         #region Fields
+
         private Guid _guid;
         private string _firstName;
         private string _lastName;
@@ -22,102 +29,64 @@ namespace AlarmClock.Models
         private string _password;
         private DateTime _lastLoginDate;
         private List<AlarmClock> _alarmClocks;
+
         #endregion
 
         #region Properties
+
         [XmlIgnore]
         public Guid Guid
         {
-            get
-            {
-                return _guid;
-            }
-            private set
-            {
-                _guid = value;
-            }
-        }
-        internal string FirstName
-        {
-            get
-            {
-                return _firstName;
-            }
-            set
-            {
-                _firstName = value;
-            }
-        }
-        internal string LastName
-        {
-            get
-            {
-                return _lastName;
-            }
-            set
-            {
-                _lastName = value;
-            }
-        }
-        internal string Email
-        {
-            get
-            {
-                return _email;
-            }
-            set
-            {
-                _email = value;
-            }
+            get { return _guid; }
+            private set { _guid = value; }
         }
 
-        internal string Login
+        public string FirstName
         {
-            get
-            {
-                return _login;
-            }
-            private set
-            {
-                _login = value;
-            }
+            get { return _firstName; }
+            set { _firstName = value; }
         }
-        internal string Password
+
+        public string LastName
         {
-            get
-            {
-                return _password;
-            }
-            set
-            {
-                _password = value;
-            }
+            get { return _lastName; }
+            set { _lastName = value; }
         }
-        internal DateTime LastLoginDate
+
+        public string Email
         {
-            get
-            {
-                return _lastLoginDate;
-            }
-            set
-            {
-                _lastLoginDate = value;
-            }
+            get { return _email; }
+            set { _email = value; }
         }
-        internal List<AlarmClock> AlarmClocks
+
+        public string Login
         {
-            get
-            {
-                return _alarmClocks;
-            }
-            private set
-            {
-                _alarmClocks = value;
-            }
+            get { return _login; }
+            private set { _login = value; }
         }
+
+        public string Password
+        {
+            get { return _password; }
+            set { _password = value; }
+        }
+
+        public DateTime LastLoginDate
+        {
+            get { return _lastLoginDate; }
+            set { _lastLoginDate = value; }
+        }
+
+        public List<AlarmClock> AlarmClocks
+        {
+            get { return _alarmClocks; }
+            private set { _alarmClocks = value; }
+        }
+
         #endregion
 
         #region Constructor
+
         public User(string firstName, string lastName, string email, string login, string password)
         {
             _guid = Guid.NewGuid();
@@ -168,7 +137,7 @@ namespace AlarmClock.Models
                 _lastLoginDate = userDTO._lastLoginDate,
                 _alarmClocks = new List<AlarmClock>()
             };
-            foreach(AlarmClockDTO acDTO in userDTO._alarmClockDTOs)
+            foreach (AlarmClockDTO acDTO in userDTO._alarmClockDTOs)
             {
                 user._alarmClocks.Add(new AlarmClock
                 {
@@ -178,6 +147,7 @@ namespace AlarmClock.Models
                     NextTriggerDate = acDTO._nextTriggerDate
                 });
             }
+
             return user;
         }
 
@@ -186,5 +156,43 @@ namespace AlarmClock.Models
             return $"{LastName} {FirstName}";
         }
 
+        #region EntityConfiguration
+
+        public class UserEntityConfiguration : EntityTypeConfiguration<User>
+        {
+            public UserEntityConfiguration()
+            {
+                ToTable("Users");
+                HasKey(s => s.Guid);
+
+                Property(p => p.Guid)
+                    .HasColumnName("Guid")
+                    .IsRequired();
+                Property(p => p.FirstName)
+                    .HasColumnName("FirstName")
+                    .IsRequired();
+                Property(p => p.LastName)
+                    .HasColumnName("LastName")
+                    .IsRequired();
+                Property(p => p.Email)
+                    .HasColumnName("Email")
+                    .IsOptional();
+                Property(p => p.Login)
+                    .HasColumnName("Login")
+                    .IsRequired();
+                Property(p => p.Password)
+                    .HasColumnName("Password")
+                    .IsRequired();
+                Property(p => p.LastLoginDate)
+                    .HasColumnName("LastLoginDate")
+                    .IsRequired();
+
+                HasMany(s => s.AlarmClocks)
+                    .WithRequired(ac => ac.User)
+                    .HasForeignKey(ac => ac.UserGuid)
+                    .WillCascadeOnDelete(true);
+            }
+        }
+        #endregion
     }
 }
