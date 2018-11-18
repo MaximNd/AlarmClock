@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using AlarmClock.Models;
 using AlarmClock.Tools;
 using AlarmClock.Tools.Serialization;
+using DBAdapter;
 
 namespace AlarmClock.Managers
 {
@@ -28,7 +29,7 @@ namespace AlarmClock.Managers
                 reader = new StreamReader(DataFile);
                 var serializer = new XmlSerializer(typeof(StoredData));
                 StoredData dataToStore = (StoredData)serializer.Deserialize(reader);
-                DBManager.Users = new List<User>(Array.ConvertAll(dataToStore.users, user => (User)user));
+                DBManager.Users = DBManager.GetAllUsers();
                 CurrentUser = DBManager.Users.FirstOrDefault(u => u.Login.Equals(dataToStore.currentUserLogin));
             }
             finally
@@ -40,19 +41,9 @@ namespace AlarmClock.Managers
 
         public static void ExportData()
         {
-            List<User> allUsers = DBManager.Users;
             User currentUser = CurrentUser;
-
-            if (currentUser != null)
-            {
-                allUsers.Remove(allUsers.Find(u => u.Login.Equals(currentUser.Login)));
-                allUsers.Add(currentUser);
-            }
-
-            Tools.StoredData dataToStore = new Tools.StoredData
-            {
-                users = Array.ConvertAll(allUsers.ToArray(), user => (UserDTO)user)
-            };
+            
+            Tools.StoredData dataToStore = new Tools.StoredData();
             if (currentUser == null)
                 dataToStore.currentUserLogin = "";
             else

@@ -10,6 +10,7 @@ using AlarmClock.Models;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
 using AlarmClock.Views.AlarmClocks;
+using System.Linq;
 [assembly: InternalsVisibleTo("Tests")]
 
 namespace AlarmClock.ViewModels.AlarmClocks
@@ -204,16 +205,20 @@ namespace AlarmClock.ViewModels.AlarmClocks
         {
             AlarmClocks.Add(alarmClock);
             StationManager.CurrentUser.AlarmClocks.Add(alarmClock.AlarmClock);
+            alarmClock.AlarmClock.UserGuid = StationManager.CurrentUser.Guid;
+            DBManager.AddAlarmClock(alarmClock.AlarmClock);
             SelectedAlarmClock = alarmClock;
             IsAlarmClockSelected = true;
         }
 
         private void DeleteSelectedAlarmClock()
         {
+            Models.AlarmClock alarmClockToDelete = StationManager.CurrentUser.AlarmClocks.FirstOrDefault(alarmClock => alarmClock.Guid == SelectedAlarmClock.AlarmClock.Guid);
+            DBManager.DeleteAlarmClock(alarmClockToDelete);
             StationManager.CurrentUser.AlarmClocks.RemoveAll(alarmClock => alarmClock.Guid == SelectedAlarmClock.AlarmClock.Guid);
             int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);
             int newIndex = deletedAlarmClockIndex == 0 ? deletedAlarmClockIndex : deletedAlarmClockIndex - 1;
-            AlarmClocks.Remove(SelectedAlarmClock);
+            AlarmClocks.Remove(SelectedAlarmClock); 
             if (AlarmClocks.Count != 0)
             {
                 SelectedAlarmClock = AlarmClocks[newIndex];

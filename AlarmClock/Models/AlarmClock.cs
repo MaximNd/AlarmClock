@@ -50,7 +50,7 @@ namespace AlarmClock.Models
         public Guid UserGuid
         {
             get { return _userGuid; }
-            private set { _userGuid = value; }
+            set { _userGuid = value; }
         }
         
         public User User
@@ -96,8 +96,7 @@ namespace AlarmClock.Models
                     .HasColumnName("Guid")
                     .IsRequired();
                 Property(p => p.LastTriggerDate)
-                    .HasColumnName("LastTriggerDate")
-                    .IsRequired();
+                    .HasColumnName("LastTriggerDate");
                 Property(s => s.NextTriggerDate)
                     .HasColumnName("NextTriggerDate")
                     .IsRequired();

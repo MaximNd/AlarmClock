@@ -156,6 +156,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             if (CheckUniqueness(dateTime))
             {
                 CurrentAlarmClock.NextTriggerDate = dateTime;
+                DBManager.SaveAlarmClock(CurrentAlarmClock.AlarmClock);
                 OnPropertyChanged(nameof(CurrentAlarmClock));
                 return true;
             }

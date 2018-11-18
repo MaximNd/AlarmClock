@@ -1,4 +1,5 @@
 ﻿using AlarmClock.Models;
+using DBAdapter;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,26 +11,44 @@ namespace AlarmClock.Managers
 
         static DBManager()
         {
-            Users.Add(new User("Petro", "Petrenko", "petro@mail.com", "test", "test"));
-            Users.Add(new User("Ivan", "Ivanenko", "ivan@mail.com", "test1", "test1"));
+            AddUser(new User("Petro", "Petrenko", "petro@mail.com", "test", "test"));
+            AddUser(new User("Ivan", "Ivanenko", "ivan@mail.com", "test1", "test1"));
         }
 
         public static bool UserExists(string login)
         {
-            return Users.Any(u => u.Login == login);
+            return EntityWrapper.UserExists(login);
         }
 
         public static User GetUserByLogin(string login)
         {
-            List<User> temp = Users;
-            return Users.FirstOrDefault(u => u.Login == login);
+            return EntityWrapper.GetUserByLogin(login);
         }
 
         public static void AddUser(User user)
         {
-            //TODO? handling when adding user with same login
-            if(!UserExists(user.Login))
-                Users.Add(user);
+            if (!UserExists(user.Login))
+                EntityWrapper.AddUser(user);
+        }
+
+        public static List<User> GetAllUsers()
+        {
+            return EntityWrapper.GetUsers();
+        }
+
+        public static void AddAlarmClock(Models.AlarmClock alarmClock)
+        {
+            EntityWrapper.AddAlarmClock(alarmClock);
+        }
+
+        public static void SaveAlarmClock(Models.AlarmClock alarmClock)
+        {
+            EntityWrapper.SaveAlarmClock(alarmClock);
+        }
+
+        public static void DeleteAlarmClock(Models.AlarmClock selectedAlarmClock)
+        {
+            EntityWrapper.DeleteAlarmClock(selectedAlarmClock);
         }
     }
 }
