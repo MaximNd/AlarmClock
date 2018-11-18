@@ -49,6 +49,10 @@
   <ItemGroup>
     <Compile Include="AlarmClockDBContext.cs" />
     <Compile Include="EntityWrapper.cs" />
+    <Compile Include="Migrations\201811180318487_InitialCreate.cs" />
+    <Compile Include="Migrations\201811180318487_InitialCreate.Designer.cs">
+      <DependentUpon>201811180318487_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +60,11 @@
       <Project>{8A144B47-691C-4763-A7A5-18BC10EDF2C8}</Project>
       <Name>AlarmClock</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201811180318487_InitialCreate.resx">
+      <DependentUpon>201811180318487_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
