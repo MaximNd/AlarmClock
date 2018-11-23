@@ -113,8 +113,8 @@ namespace AlarmClock.ViewModels.AlarmClocks
 
         #region EventsAndHandlers
         
-        internal event newAlarmClockUniqueHandler NewAlarmClockUnique;
-        internal delegate void newAlarmClockUniqueHandler();
+        internal event NewAlarmClockUniqueHandler NewAlarmClockUnique;
+        internal delegate void NewAlarmClockUniqueHandler();
 
         internal virtual void OnNewAlarmClockUnique()
         {

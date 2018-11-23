@@ -34,23 +34,16 @@ namespace AlarmClock.Tools
         public static bool CheckAndCreateFile(string filePath)
         {
             bool isExistBefore = true;
-            try
+            FileInfo file = new FileInfo(filePath);
+            if (!file.Directory.Exists)
             {
-                FileInfo file = new FileInfo(filePath);
-                if (!file.Directory.Exists)
-                {
-                    file.Directory.Create();
-                }
-
-                if (!file.Exists)
-                {
-                    file.Create().Close();
-                    isExistBefore = false;
-                }
+                file.Directory.Create();
             }
-            catch (Exception)
+
+            if (!file.Exists)
             {
-                throw;
+                file.Create().Close();
+                isExistBefore = false;
             }
 
             return isExistBefore;
