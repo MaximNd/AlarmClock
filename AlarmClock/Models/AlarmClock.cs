@@ -33,11 +33,13 @@ namespace AlarmClock.Models
             set
             {
                 _nextTriggerDate = value;
-                // TODO fix bug with DateTime.Now
-                //if (_nextTriggerDate < DateTime.Now)
-                //    _nextTriggerDate = _nextTriggerDate.AddDays((DateTime.Now - _nextTriggerDate).TotalDays);
-                //if (_nextTriggerDate > DateTime.Now.AddDays(1))
-                //    _nextTriggerDate = _nextTriggerDate.AddDays(-1);
+                if (_nextTriggerDate <= DateTime.Now)
+                {
+                    _nextTriggerDate = _nextTriggerDate.AddDays((DateTime.Now - _nextTriggerDate).Days + 1);
+                    return;
+                }
+                if (_nextTriggerDate > DateTime.Now.AddDays(1))
+                    _nextTriggerDate = _nextTriggerDate.AddDays(-(_nextTriggerDate - DateTime.Now).Days);
             }
         }
 

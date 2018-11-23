@@ -172,7 +172,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                 {
                     continue;
                 }
-                if (alarmClock.NextTriggerDate == dateTime)
+                if (alarmClock.NextTriggerDate.TimeOfDay == dateTime.TimeOfDay)
                 {
                     return false;
                 }
