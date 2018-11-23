@@ -65,11 +65,10 @@ namespace AlarmClock.Managers
 
         }
 
-        internal static void CloseApp()
+        public static void CloseApp()
         {
             ExportData();
 
-            MessageBox.Show("All Data Saved.\nShutDown");
             Environment.Exit(1);
         }
     }

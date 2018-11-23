@@ -64,6 +64,14 @@
       <Project>{8a144b47-691c-4763-a7a5-18bc10edf2c8}</Project>
       <Name>AlarmClock</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DBModels\DBModels.csproj">
+      <Project>{87792792-b596-48c2-a083-8ee28938b2c1}</Project>
+      <Name>DBModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Managers\Managers.csproj">
+      <Project>{b41f1ed6-a8dc-473e-bd90-b6a4b34af571}</Project>
+      <Name>Managers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

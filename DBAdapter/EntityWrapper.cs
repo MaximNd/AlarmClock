@@ -41,6 +41,14 @@ namespace DBAdapter
             }
         }
 
+        public static List<User> GetUsers()
+        {
+            using (var context = new AlarmClockDBContext())
+            {
+                return context.Users.Include(u => u.AlarmClocks).ToList();
+            }
+        }
+
         public static void AddUser(User user)
         {
             using (var context = new AlarmClockDBContext())

@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -80,24 +80,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DBAdapter\AlarmClockDBContext.cs" />
-    <Compile Include="DBAdapter\EntityWrapper.cs" />
-    <Compile Include="DBAdapter\Migrations\201811180318487_InitialCreate.cs" />
-    <Compile Include="DBAdapter\Migrations\201811180318487_InitialCreate.Designer.cs">
-      <DependentUpon>201811180318487_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DBAdapter\Migrations\Configuration.cs" />
-    <Compile Include="Managers\DBManager.cs" />
     <Compile Include="Managers\LoaderManager.cs" />
     <Compile Include="Managers\NavigationManager.cs" />
-    <Compile Include="Managers\StationManager.cs" />
     <Compile Include="Migrations\201811180855052_NewMigration1.cs" />
     <Compile Include="Migrations\201811180855052_NewMigration1.Designer.cs">
       <DependentUpon>201811180855052_NewMigration1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\AlarmClock.cs" />
     <Compile Include="Models\AlarmClockForView.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Tools\Controls\LabelAndPasswordControl.xaml.cs">
       <DependentUpon>LabelAndPasswordControl.xaml</DependentUpon>
@@ -105,18 +94,12 @@
     <Compile Include="Tools\Controls\LabelAndTextControl.xaml.cs">
       <DependentUpon>LabelAndTextControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Encrypting.cs" />
-    <Compile Include="Tools\FileFolderHelper.cs" />
     <Compile Include="Tools\IContentWindow.cs" />
     <Compile Include="Tools\ILoaderOwner.cs" />
-    <Compile Include="Tools\Logger.cs" />
     <Compile Include="Tools\NavigationModel.cs" />
     <Compile Include="Tools\PasswordBoxAssistant.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
     <Compile Include="Tools\InverseBooleanConverter.cs" />
-    <Compile Include="Tools\Serialization\AlarmClockDTO.cs" />
-    <Compile Include="Tools\Serialization\StoredData.cs" />
-    <Compile Include="Tools\Serialization\UserDTO.cs" />
     <Compile Include="Tools\TimeGenerator.cs" />
     <Compile Include="ViewModels\AlarmClocks\AlarmClocksViewModel.cs" />
     <Compile Include="ViewModels\AlarmClocks\AlarmClock\AlarmClockViewModel.cs" />
@@ -194,9 +177,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="DBAdapter\Migrations\201811180318487_InitialCreate.resx">
-      <DependentUpon>201811180318487_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811180855052_NewMigration1.resx">
       <DependentUpon>201811180855052_NewMigration1.cs</DependentUpon>
     </EmbeddedResource>
@@ -230,5 +210,20 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DBModels\DBModels.csproj">
+      <Project>{87792792-b596-48c2-a083-8ee28938b2c1}</Project>
+      <Name>DBModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Managers\Managers.csproj">
+      <Project>{b41f1ed6-a8dc-473e-bd90-b6a4b34af571}</Project>
+      <Name>Managers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tools\Tools.csproj">
+      <Project>{c7bf842c-05d4-41fc-8958-48ee86e0ba3d}</Project>
+      <Name>Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

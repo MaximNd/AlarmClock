@@ -13,11 +13,6 @@ namespace DBAdapter
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AlarmClockDBContext, Configuration>(true));
         }
 
-        public static void Main(string[] args)
-        {
-            
-        }
-
         public DbSet<User> Users { get; set; }
         public DbSet<AlarmClockModel> AlarmClocks { get; set; }
 

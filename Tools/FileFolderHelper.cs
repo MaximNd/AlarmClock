@@ -3,27 +3,27 @@ using System.IO;
 
 namespace AlarmClock.Tools
 {
-    internal static class FileFolderHelper
+    public static class FileFolderHelper
     {
         private static readonly string AppDataPath =
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        internal static readonly string ClientFolderPath =
+        public static readonly string ClientFolderPath =
             Path.Combine(AppDataPath, "AlarmClock");
-        internal static readonly string LogFolderPath =
+        public static readonly string LogFolderPath =
             Path.Combine(ClientFolderPath, "Log");
-        internal static readonly string LogFilepath = Path.Combine(LogFolderPath,
+        public static readonly string LogFilepath = Path.Combine(LogFolderPath,
             "App_" + DateTime.Now.ToString("YYYY_MM_DD") + ".txt");
-        internal static readonly string DataFolderPath = 
+        public static readonly string DataFolderPath = 
             Path.Combine(ClientFolderPath, "Data");
-        internal static readonly string DataFilePath =
+        public static readonly string DataFilePath =
             Path.Combine(DataFolderPath, "data.xml");
-        internal static readonly string AssetsFolderPath =
+        public static readonly string AssetsFolderPath =
             Path.Combine(Environment.CurrentDirectory, @"Assets\");
-        internal static readonly string SoundsFolderPath =
+        public static readonly string SoundsFolderPath =
             Path.Combine(AssetsFolderPath, "Sounds");
-        internal static readonly string AlarmSoundFilepath =
+        public static readonly string AlarmSoundFilepath =
             Path.Combine(SoundsFolderPath, "alarm_sound.wav");
-        internal static readonly string LastUserFilePath =
+        public static readonly string LastUserFilePath =
             Path.Combine(ClientFolderPath, "LastUser.alarmclock");
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace AlarmClock.Tools
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        internal static bool CheckAndCreateFile(string filePath)
+        public static bool CheckAndCreateFile(string filePath)
         {
             bool isExistBefore = true;
             try

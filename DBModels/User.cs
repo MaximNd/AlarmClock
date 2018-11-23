@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
+using System.Linq;
 using System.Xml.Serialization;
 using AlarmClock.Tools;
 using AlarmClock.Tools.Serialization;
@@ -149,6 +150,32 @@ namespace AlarmClock.Models
             }
 
             return user;
+        }
+
+        public UserDTO ToDTO()
+        {
+            UserDTO userDTO = new UserDTO
+            {
+                _guid = this.Guid.ToString(),
+                _firstName = this.FirstName,
+                _lastName = this.LastName,
+                _email = this.Email,
+                _login = this.Login,
+                _password = this.Password,
+                _lastLoginDate = this.LastLoginDate,
+                _alarmClockDTOs = new AlarmClockDTO[this.AlarmClocks.Count()]
+            };
+
+            for (int i = 0; i < this.AlarmClocks.Count(); ++i)
+            {
+                userDTO._alarmClockDTOs[i] = new AlarmClockDTO
+                {
+                    _guid = this.AlarmClocks[i].Guid.ToString(),
+                    _lastTriggerDate = this.AlarmClocks[i].LastTriggerDate,
+                    _nextTriggerDate = this.AlarmClocks[i].NextTriggerDate
+                };
+            }
+            return userDTO;
         }
 
         public override string ToString()

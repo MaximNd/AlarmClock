@@ -21,6 +21,7 @@ namespace AlarmClock
                     AlarmClock.IsAlarming = false;
                 });
             StationManager.CloseApp();
+            MessageBox.Show("All Data Saved.\nShutDown");
         }
     }
 }

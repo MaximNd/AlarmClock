@@ -1,13 +1,12 @@
 ﻿using AlarmClock.Models;
 using DBAdapter;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AlarmClock.Managers
 {
     public class DBManager
     {
-        internal static List<User> Users = new List<User>();
+        public static List<User> Users = new List<User>();
 
         static DBManager()
         {

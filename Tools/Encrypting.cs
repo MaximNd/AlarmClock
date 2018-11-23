@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 
 namespace AlarmClock.Tools
 {
-    class Encrypting
+    public class Encrypting
     {
         public static string EncryptText(string text, string publicKey)
         {
