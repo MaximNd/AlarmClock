@@ -62,11 +62,18 @@
     <Compile Include="Migrations\201811180318487_InitialCreate.Designer.cs">
       <DependentUpon>201811180318487_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811241741001_tet.cs" />
+    <Compile Include="Migrations\201811241741001_tet.Designer.cs">
+      <DependentUpon>201811241741001_tet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811180318487_InitialCreate.resx">
       <DependentUpon>201811180318487_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811241741001_tet.resx">
+      <DependentUpon>201811241741001_tet.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
