@@ -178,17 +178,15 @@ namespace AlarmClock.ViewModels.AlarmClocks
                     while (true)
                     {
                         DateTime nowStart = DateTime.Now;
-                        DateTime nowEnd = DateTime.Now.AddSeconds(5);
                         foreach (AlarmClockForView afc in AlarmClocks)
                         {
-                            if (!afc.IsAlarming && nowStart < afc.AlarmClock.NextTriggerDate
-                                && nowEnd > afc.AlarmClock.NextTriggerDate)
+                            if (!afc.IsAlarming && nowStart > afc.AlarmClock.NextTriggerDate)
                             {
                                 return afc;
                             }
                             Console.WriteLine(nowStart - afc.AlarmClock.NextTriggerDate);
                         }
-                        Thread.Sleep(1000);
+                        Thread.Sleep(500);
                     }
                 });
                 alarmClockForView.Alarm();
