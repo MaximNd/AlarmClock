@@ -1,6 +1,4 @@
-﻿using AlarmClock.Tools.Serialization;
-
-namespace AlarmClock.Tools
+﻿namespace Tools.Serialization
 {
     public class StoredData
     {

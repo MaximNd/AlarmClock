@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using AlarmClock.Models;
-using AlarmClockModel = AlarmClock.Models.AlarmClock;
+using DBModels;
 
 namespace DBAdapter
 {
@@ -58,7 +57,7 @@ namespace DBAdapter
             }
         }
 
-        public static void AddAlarmClock(AlarmClockModel alarmClock)
+        public static void AddAlarmClock(AlarmClock alarmClock)
         {
             using (var context = new AlarmClockDBContext())
             {
@@ -68,7 +67,7 @@ namespace DBAdapter
             }
         }
 
-        public static void SaveAlarmClock(AlarmClockModel alarmClock)
+        public static void SaveAlarmClock(AlarmClock alarmClock)
         {
             using (var context = new AlarmClockDBContext())
             {
@@ -77,7 +76,7 @@ namespace DBAdapter
             }
         }
 
-        public static void DeleteAlarmClock(AlarmClockModel selectedAlarmClock)
+        public static void DeleteAlarmClock(AlarmClock selectedAlarmClock)
         {
             using (var context = new AlarmClockDBContext())
             {

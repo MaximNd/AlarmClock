@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AlarmClock.Tools.Serialization
+namespace Tools.Serialization
 {
     public class AlarmClockDTO
     {

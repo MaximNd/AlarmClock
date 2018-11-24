@@ -5,9 +5,9 @@ using System.Media;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using AlarmClock.Managers;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
+using Managers;
 
 namespace AlarmClock.ViewModels.AlarmClocks
 {
@@ -33,7 +33,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
             {
                 return _checkForUniqueness ?? (_checkForUniqueness = new RelayCommand<object>((object o) =>
                 {
-                    foreach (Models.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
+                    foreach (DBModels.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
                     {
                         if (alarmClock.NextTriggerDate == NewDateTime)
                         {

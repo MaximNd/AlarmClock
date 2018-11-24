@@ -4,6 +4,7 @@ using System.Windows;
 using AlarmClock.Managers;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
+using Managers;
 
 namespace AlarmClock.ViewModels
 {

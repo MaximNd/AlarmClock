@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using AlarmClock.Models;
-using AlarmClockModel = AlarmClock.Models.AlarmClock;
+using DBModels;
 
 namespace Tests.Tools
 {
     internal static class UserGenerator
     {
-        private static void GenerateAlarmClocks(List<AlarmClockModel> alarmClocks)
+        private static void GenerateAlarmClocks(List<DBModels.AlarmClock> alarmClocks)
         {
             Random random = new Random();
             var today = DateTime.Today;
             for (int i = 0; i < 10; i++)
             {
-                alarmClocks.Add(new AlarmClockModel(null, new DateTime(today.Year, today.Month, today.Day, random.Next(0, 23), random.Next(0, 59), 0)));
+                alarmClocks.Add(new DBModels.AlarmClock(null, new DateTime(today.Year, today.Month, today.Day, random.Next(0, 23), random.Next(0, 59), 0)));
             }
         }
 

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Text;
 using System.Security.Cryptography;
+using System.Text;
 
-
-namespace AlarmClock.Tools
+namespace Tools
 {
     public class Encrypting
     {

@@ -1,5 +1,6 @@
 ﻿using AlarmClock.Managers;
 using System.Windows;
+using Managers;
 
 namespace AlarmClock
 {

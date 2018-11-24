@@ -1,8 +1,8 @@
-﻿using AlarmClock.Models;
+﻿using System.Collections.Generic;
 using DBAdapter;
-using System.Collections.Generic;
+using DBModels;
 
-namespace AlarmClock.Managers
+namespace Managers
 {
     public class DBManager
     {
@@ -35,17 +35,17 @@ namespace AlarmClock.Managers
             return EntityWrapper.GetUsers();
         }
 
-        public static void AddAlarmClock(Models.AlarmClock alarmClock)
+        public static void AddAlarmClock(DBModels.AlarmClock alarmClock)
         {
             EntityWrapper.AddAlarmClock(alarmClock);
         }
 
-        public static void SaveAlarmClock(Models.AlarmClock alarmClock)
+        public static void SaveAlarmClock(DBModels.AlarmClock alarmClock)
         {
             EntityWrapper.SaveAlarmClock(alarmClock);
         }
 
-        public static void DeleteAlarmClock(Models.AlarmClock selectedAlarmClock)
+        public static void DeleteAlarmClock(DBModels.AlarmClock selectedAlarmClock)
         {
             EntityWrapper.DeleteAlarmClock(selectedAlarmClock);
         }

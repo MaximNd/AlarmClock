@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace AlarmClock.Tools
+namespace Tools
 {
     public static class Logger
     {

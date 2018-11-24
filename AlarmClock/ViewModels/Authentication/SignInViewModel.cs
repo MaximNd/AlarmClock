@@ -9,6 +9,10 @@ using AlarmClock.Managers;
 using AlarmClock.Models;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
+using DBModels;
+using Managers;
+using Tools;
+
 [assembly: InternalsVisibleTo("Tests")]
 
 namespace AlarmClock.ViewModels.Authentication

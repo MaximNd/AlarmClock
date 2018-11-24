@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
-using AlarmClock.Models;
+using DBModels;
 using DBAdapter.Migrations;
-using AlarmClockModel = AlarmClock.Models.AlarmClock;
 
 namespace DBAdapter
 {
@@ -14,12 +13,12 @@ namespace DBAdapter
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<AlarmClockModel> AlarmClocks { get; set; }
+        public DbSet<AlarmClock> AlarmClocks { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new User.UserEntityConfiguration());
-            modelBuilder.Configurations.Add(new AlarmClockModel.AlarmClockEntityConfiguration());
+            modelBuilder.Configurations.Add(new AlarmClock.AlarmClockEntityConfiguration());
         }
     }
 }

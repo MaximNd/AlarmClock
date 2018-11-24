@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AlarmClock.Models
+namespace DBModels
 {
     public class AlarmClock
     {

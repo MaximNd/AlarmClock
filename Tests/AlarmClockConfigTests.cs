@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using AlarmClock.Managers;
 using AlarmClock.Models;
 using AlarmClock.ViewModels.AlarmClocks.AlarmClock;
+using DBModels;
+using Managers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tests.Tools;
 

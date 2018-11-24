@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Xml.Serialization;
-using AlarmClock.Tools;
-using AlarmClock.Tools.Serialization;
+using Tools;
+using Tools.Serialization;
 
-namespace AlarmClock.Models
+namespace DBModels
 {
     public class User
     {

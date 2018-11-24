@@ -4,34 +4,33 @@ using System.Media;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using AlarmClock.Managers;
 using AlarmClock.Properties;
-using AlarmClock.Tools;
+using Managers;
+using Tools;
 
 namespace AlarmClock.Models
 {
     public class AlarmClockForView : INotifyPropertyChanged
     {
         #region Fields
-        private readonly AlarmClock _alarmClock;
+        private readonly DBModels.AlarmClock _alarmClock;
         #endregion
 
 
         #region Constructor
         public AlarmClockForView(DateTime? lastTriggerDate, DateTime nextTriggerDate)
         {
-            _alarmClock = new AlarmClock(lastTriggerDate, nextTriggerDate);
+            _alarmClock = new DBModels.AlarmClock(lastTriggerDate, nextTriggerDate);
         }
 
-        public AlarmClockForView(AlarmClock alarmClock)
+        public AlarmClockForView(DBModels.AlarmClock alarmClock)
         {
             _alarmClock = alarmClock;
         }
         #endregion
 
         #region Properties
-        public AlarmClock AlarmClock
+        public DBModels.AlarmClock AlarmClock
         {
             get { return _alarmClock; }
         }

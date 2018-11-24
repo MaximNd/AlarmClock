@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Xml.Serialization;
-using AlarmClock.Models;
-using AlarmClock.Tools;
-using AlarmClock.Tools.Serialization;
-using DBAdapter;
+using DBModels;
+using Tools;
+using Tools.Serialization;
 
-namespace AlarmClock.Managers
+namespace Managers
 {
     public static class StationManager
     {
@@ -43,7 +40,7 @@ namespace AlarmClock.Managers
         {
             User currentUser = CurrentUser;
             
-            Tools.StoredData dataToStore = new Tools.StoredData();
+            StoredData dataToStore = new StoredData();
             if (currentUser == null)
                 dataToStore.currentUserLogin = "";
             else
@@ -53,7 +50,7 @@ namespace AlarmClock.Managers
 
             try
             {
-                var serializer = new XmlSerializer(typeof(Tools.StoredData));
+                var serializer = new XmlSerializer(typeof(StoredData));
                 writer = new StreamWriter(DataFile, false);
                 serializer.Serialize(writer, dataToStore);
             }

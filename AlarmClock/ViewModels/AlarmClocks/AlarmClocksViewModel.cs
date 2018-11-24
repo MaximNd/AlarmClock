@@ -11,6 +11,9 @@ using AlarmClock.Properties;
 using AlarmClock.Tools;
 using AlarmClock.Views.AlarmClocks;
 using System.Linq;
+using Managers;
+using Tools;
+
 [assembly: InternalsVisibleTo("Tests")]
 
 namespace AlarmClock.ViewModels.AlarmClocks
@@ -73,7 +76,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
                         // fake DB delay
                         Thread.Sleep(500);
                     });
-                    Models.AlarmClock alarmClockToDelete = SelectedAlarmClock.AlarmClock;
+                    DBModels.AlarmClock alarmClockToDelete = SelectedAlarmClock.AlarmClock;
                     DeleteSelectedAlarmClock();
                     Logger.Log($"User: {StationManager.CurrentUser} delete AlarmClock: {alarmClockToDelete}");
                     LoaderManager.Instance.HideLoader();
@@ -155,7 +158,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
         public void FillAlarmClocks()
         {
             _alarmClocks = new ObservableCollection<AlarmClockForView>();
-            foreach (Models.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
+            foreach (DBModels.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
             {
                 _alarmClocks.Add(new AlarmClockForView(alarmClock));
             }
@@ -213,7 +216,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
 
         private void DeleteSelectedAlarmClock()
         {
-            Models.AlarmClock alarmClockToDelete = StationManager.CurrentUser.AlarmClocks.FirstOrDefault(alarmClock => alarmClock.Guid == SelectedAlarmClock.AlarmClock.Guid);
+            DBModels.AlarmClock alarmClockToDelete = StationManager.CurrentUser.AlarmClocks.FirstOrDefault(alarmClock => alarmClock.Guid == SelectedAlarmClock.AlarmClock.Guid);
             DBManager.DeleteAlarmClock(alarmClockToDelete);
             StationManager.CurrentUser.AlarmClocks.RemoveAll(alarmClock => alarmClock.Guid == SelectedAlarmClock.AlarmClock.Guid);
             int deletedAlarmClockIndex = AlarmClocks.IndexOf(SelectedAlarmClock);

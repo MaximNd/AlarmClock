@@ -11,6 +11,9 @@ using AlarmClock.Managers;
 using AlarmClock.Models;
 using AlarmClock.Properties;
 using AlarmClock.Tools;
+using Managers;
+using Tools;
+
 [assembly: InternalsVisibleTo("Tests")]
 
 namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
@@ -166,7 +169,7 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
 
         private bool CheckUniqueness(DateTime dateTime)
         {
-            foreach (Models.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
+            foreach (DBModels.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
             {
                 if (alarmClock.Guid == CurrentAlarmClock.AlarmClock.Guid)
                 {

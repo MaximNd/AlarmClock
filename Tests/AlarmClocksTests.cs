@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using AlarmClock.Managers;
 using AlarmClock.Models;
 using AlarmClock.ViewModels.AlarmClocks;
+using DBModels;
+using Managers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tests.Tools;
-using AlarmClockModel = AlarmClock.Models.AlarmClock;
 
 namespace Tests
 {
@@ -87,7 +87,7 @@ namespace Tests
         {
             AlarmClocksViewModel alarmClocksViewModel = new AlarmClocksViewModel((AlarmClockForView alarmClock) => { });
             alarmClocksViewModel.SelectedAlarmClock = alarmClocksViewModel.AlarmClocks[alarmClocksViewModel.AlarmClocks.Count-1];
-            AlarmClockModel selectedAlarmClock = alarmClocksViewModel.SelectedAlarmClock.AlarmClock;
+            DBModels.AlarmClock selectedAlarmClock = alarmClocksViewModel.SelectedAlarmClock.AlarmClock;
             Assert.AreEqual(selectedAlarmClock, alarmClocksViewModel.SelectedAlarmClock.AlarmClock);
             int countAlarmClocks = alarmClocksViewModel.AlarmClocks.Count;
 

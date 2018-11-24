@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace AlarmClock.Tools.Serialization
+namespace Tools.Serialization
 {
     public class UserDTO
     {
@@ -16,7 +15,4 @@ namespace AlarmClock.Tools.Serialization
 
         public UserDTO() { }
     }
-
-
-
 }
