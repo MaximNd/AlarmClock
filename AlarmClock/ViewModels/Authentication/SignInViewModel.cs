@@ -102,10 +102,6 @@ namespace AlarmClock.ViewModels.Authentication
             LoaderManager.Instance.ShowLoader();
             var res = await Task.Run(() =>
             {
-                // TODO delete this later
-                // faking delay
-                Thread.Sleep(500);
-
                 User currentUser;
                 try
                 {

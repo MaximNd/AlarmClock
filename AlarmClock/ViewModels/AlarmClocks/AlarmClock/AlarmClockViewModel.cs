@@ -49,13 +49,8 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
                     int updatedNextHour = Int32.Parse(SelectedHour);
                     int updatedNexMinute = Int32.Parse(SelectedMinute);
                     DateTime dateTime = new DateTime(currentNextYear, currentNextMonth, currentNextDay, updatedNextHour, updatedNexMinute, 0);
-                    await Task.Run(() =>
-                    {
-                        // TODO delete this later
-                        // fake DB delay
-                        Thread.Sleep(500);
-                    });
-                    if (UpdateTime(dateTime))
+                    
+                    if (await UpdateTime(dateTime))
                     {
                         Logger.Log($"User: {StationManager.CurrentUser} updated the alarm clock. Time that was Before: {beforeDateTime}, Time After: {dateTime}");
                     }
@@ -154,12 +149,15 @@ namespace AlarmClock.ViewModels.AlarmClocks.AlarmClock
             IsAlarming = CurrentAlarmClock.IsAlarming;
         }
 
-        private bool UpdateTime(DateTime dateTime)
+        private async Task<bool> UpdateTime(DateTime dateTime)
         {
             if (CheckUniqueness(dateTime))
             {
                 CurrentAlarmClock.NextTriggerDate = dateTime;
-                DBManager.SaveAlarmClock(CurrentAlarmClock.AlarmClock);
+                await Task.Run(() =>
+                {
+                    DBManager.SaveAlarmClock(CurrentAlarmClock.AlarmClock);
+                });
                 OnPropertyChanged(nameof(CurrentAlarmClock));
                 return true;
             }

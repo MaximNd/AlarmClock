@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 using DBModels;
 using Tools;
@@ -26,8 +25,7 @@ namespace Managers
                 reader = new StreamReader(DataFile);
                 var serializer = new XmlSerializer(typeof(StoredData));
                 StoredData dataToStore = (StoredData)serializer.Deserialize(reader);
-                DBManager.Users = DBManager.GetAllUsers();
-                CurrentUser = DBManager.Users.FirstOrDefault(u => u.Login.Equals(dataToStore.currentUserLogin));
+                CurrentUser = DBManager.GetUserByLogin(dataToStore.currentUserLogin);
             }
             finally
             {

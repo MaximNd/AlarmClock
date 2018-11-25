@@ -46,6 +46,10 @@
     <Compile Include="StationManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AlarmClockServiceInterface\AlarmClockServiceInterface.csproj">
+      <Project>{331c27ab-aa7c-4ac0-933f-41ff33d3bab0}</Project>
+      <Name>AlarmClockServiceInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DBAdapter\DBAdapter.csproj">
       <Project>{5fb2c777-9a9a-4f71-af8f-8634e45ea29d}</Project>
       <Name>DBAdapter</Name>

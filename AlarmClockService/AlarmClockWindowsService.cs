@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ServiceModel;
 using System.ServiceProcess;
+using System.Threading;
 using Tools;
 
 namespace AlarmClockService
 {
-    class AlarmClockSimulatorWindowsService : ServiceBase
+    public class AlarmClockWindowsService : ServiceBase
     {
         internal const string CurrentServiceName = "AlarmClockService";
         internal const string CurrentServiceDisplayName = "Alarm Clock Service";
@@ -14,7 +15,7 @@ namespace AlarmClockService
         internal const string CurrentServiceDescription = "Alarm Clock for learning purposes.";
         private ServiceHost _serviceHost = null;
 
-        public AlarmClockSimulatorWindowsService()
+        public AlarmClockWindowsService()
         {
             ServiceName = CurrentServiceName;
             try
@@ -48,7 +49,7 @@ namespace AlarmClockService
             }
             try
             {
-                _serviceHost = new ServiceHost(typeof(AlarmCklockSimulatorService));
+                _serviceHost = new ServiceHost(typeof(AlarmClockService));
                 _serviceHost.Open();
             }
             catch (Exception ex)

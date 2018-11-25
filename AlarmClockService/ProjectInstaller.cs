@@ -14,9 +14,9 @@ namespace AlarmClockService
             _serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
             _serviceProcessInstaller.Password = null;
             _serviceProcessInstaller.Username = null;
-            _serviceInstaller.ServiceName = AlarmClockSimulatorWindowsService.CurrentServiceName;
-            _serviceInstaller.DisplayName = AlarmClockSimulatorWindowsService.CurrentServiceDisplayName;
-            _serviceInstaller.Description = AlarmClockSimulatorWindowsService.CurrentServiceDescription;
+            _serviceInstaller.ServiceName = AlarmClockWindowsService.CurrentServiceName;
+            _serviceInstaller.DisplayName = AlarmClockWindowsService.CurrentServiceDisplayName;
+            _serviceInstaller.Description = AlarmClockWindowsService.CurrentServiceDescription;
             _serviceInstaller.StartType = ServiceStartMode.Automatic;
             Installers.AddRange(new Installer[]
             {

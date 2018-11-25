@@ -11,12 +11,12 @@ namespace AlarmClockService
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main()
+        public static void Main()
         {
             //Thread.Sleep(10000);
             bool isInstalled = false;
             bool serviceStarting = false;
-            const string serviceName = AlarmClockSimulatorWindowsService.CurrentServiceName;
+            const string serviceName = AlarmClockWindowsService.CurrentServiceName;
 
             ServiceController[] services = ServiceController.GetServices();
 
@@ -56,7 +56,7 @@ namespace AlarmClockService
             }
             else
             {
-                var servicesToRun = new ServiceBase[] { new AlarmClockSimulatorWindowsService(), };
+                var servicesToRun = new ServiceBase[] { new AlarmClockWindowsService(), };
                 ServiceBase.Run(servicesToRun);
             }
         }

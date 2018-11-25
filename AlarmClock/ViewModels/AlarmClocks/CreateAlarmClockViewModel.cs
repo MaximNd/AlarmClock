@@ -35,7 +35,7 @@ namespace AlarmClock.ViewModels.AlarmClocks
                 {
                     foreach (DBModels.AlarmClock alarmClock in StationManager.CurrentUser.AlarmClocks)
                     {
-                        if (alarmClock.NextTriggerDate == NewDateTime)
+                        if (alarmClock.NextTriggerDate.Hour == NewDateTime.Hour && alarmClock.NextTriggerDate.Minute == NewDateTime.Minute)
                         {
                             SystemSounds.Beep.Play();
                             MessageBox.Show("The alarm time must be unique.");

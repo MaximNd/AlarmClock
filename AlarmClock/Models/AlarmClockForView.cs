@@ -85,7 +85,7 @@ namespace AlarmClock.Models
                 IsAlarming = false;
             });
             IsAlarming = true;
-            LastTriggerDate = DateTime.Now;
+            LastTriggerDate = NextTriggerDate;
             NextTriggerDate = NextTriggerDate.AddDays(1);
         }
 

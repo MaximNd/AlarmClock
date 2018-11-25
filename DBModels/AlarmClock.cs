@@ -1,16 +1,24 @@
 ﻿using System;
 using System.Data.Entity.ModelConfiguration;
+using System.Runtime.Serialization;
 
 namespace DBModels
 {
+    [DataContract(IsReference = true)]
     public class AlarmClock
     {
         #region Fields
+        [DataMember]
         private Guid _guid;
+        [DataMember]
         private DateTime? _lastTriggerDate;
+        [DataMember]
         private DateTime _nextTriggerDate;
+        [DataMember]
         private bool _isAlarming;
+        [DataMember]
         private Guid _userGuid;
+        [DataMember]
         private User _user;
         #endregion
 
@@ -32,14 +40,8 @@ namespace DBModels
             get { return _nextTriggerDate; }
             set
             {
-                _nextTriggerDate = value;
-                if (_nextTriggerDate <= DateTime.Now)
-                {
-                    _nextTriggerDate = _nextTriggerDate.AddDays((DateTime.Now - _nextTriggerDate).Days + 1);
-                    return;
-                }
-                if (_nextTriggerDate > DateTime.Now.AddDays(1))
-                    _nextTriggerDate = _nextTriggerDate.AddDays(-(_nextTriggerDate - DateTime.Now).Days);
+                _nextTriggerDate = normalizeDate(value);
+                
             }
         }
 
@@ -67,13 +69,26 @@ namespace DBModels
         {
             _guid = Guid.NewGuid();
             _lastTriggerDate = lastTriggerDate;
-            _nextTriggerDate = nextTriggerDate;
+            _nextTriggerDate = normalizeDate(nextTriggerDate);
             _isAlarming = false;
         }
-        #endregion
         public AlarmClock()
         {
             _guid = Guid.NewGuid();
+        }
+        #endregion
+
+
+        private DateTime normalizeDate(DateTime dateTime)
+        {
+            DateTime now = DateTime.Now;
+            if (dateTime <= now)
+            {
+                return dateTime.AddDays((now - dateTime).Days + 1);
+            }
+            if (dateTime > now.AddDays(1))
+                return dateTime.AddDays(-(dateTime - now).Days);
+            return dateTime;
         }
 
         public bool Equals(AlarmClock alarmClock)

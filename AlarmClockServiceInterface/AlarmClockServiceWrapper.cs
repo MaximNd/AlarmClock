@@ -5,11 +5,11 @@ using DBModels;
 
 namespace AlarmClockServiceInterface
 {
-    class AlarmClockServiceWrapper
+    public class AlarmClockServiceWrapper
     {
         public static bool UserExists(string login)
         {
-            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Server"))
+            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Alarm Clock Service"))
             {
                 IAlarmClockContract client = myChannelFactory.CreateChannel();
                 return client.UserExists(login);
@@ -18,7 +18,7 @@ namespace AlarmClockServiceInterface
 
         public static User GetUserByLogin(string login)
         {
-            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Server"))
+            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Alarm Clock Service"))
             {
                 IAlarmClockContract client = myChannelFactory.CreateChannel();
                 return client.GetUserByLogin(login);
@@ -27,25 +27,25 @@ namespace AlarmClockServiceInterface
 
         public static User GetUserByGuid(Guid guid)
         {
-            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Server"))
+            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Alarm Clock Service"))
             {
                 IAlarmClockContract client = myChannelFactory.CreateChannel();
                 return client.GetUserByGuid(guid);
             }
         }
 
-        public static List<User> GetAllUsers(Guid alarmClockGuid)
+        public static List<User> GetAllUsers()
         {
-            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Server"))
+            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Alarm Clock Service"))
             {
                 IAlarmClockContract client = myChannelFactory.CreateChannel();
-                return client.GetAllUsers(alarmClockGuid);
+                return client.GetAllUsers();
             }
         }
 
         public static void AddUser(User user)
         {
-            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Server"))
+            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Alarm Clock Service"))
             {
                 IAlarmClockContract client = myChannelFactory.CreateChannel();
                 client.AddUser(user);
@@ -54,7 +54,7 @@ namespace AlarmClockServiceInterface
 
         public static void AddAlarmClock(AlarmClock alarmClock)
         {
-            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Server"))
+            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Alarm Clock Service"))
             {
                 IAlarmClockContract client = myChannelFactory.CreateChannel();
                 client.AddAlarmClock(alarmClock);
@@ -63,7 +63,7 @@ namespace AlarmClockServiceInterface
 
         public static void SaveAlarmClock(AlarmClock alarmClock)
         {
-            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Server"))
+            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Alarm Clock Service"))
             {
                 IAlarmClockContract client = myChannelFactory.CreateChannel();
                 client.SaveAlarmClock(alarmClock);
@@ -72,7 +72,7 @@ namespace AlarmClockServiceInterface
 
         public static void DeleteAlarmClock(AlarmClock selectedAlarmClock)
         {
-            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Server"))
+            using (var myChannelFactory = new ChannelFactory<IAlarmClockContract>("Alarm Clock Service"))
             {
                 IAlarmClockContract client = myChannelFactory.CreateChannel();
                 client.DeleteAlarmClock(selectedAlarmClock);

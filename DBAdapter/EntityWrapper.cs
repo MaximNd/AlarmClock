@@ -32,15 +32,7 @@ namespace DBAdapter
             }
         }
 
-        public static List<User> GetAllUsers(Guid alarmClockGuid)
-        {
-            using (var context = new AlarmClockDBContext())
-            {
-                return context.Users.Where(u => u.AlarmClocks.All(r => r.Guid != alarmClockGuid)).ToList();
-            }
-        }
-
-        public static List<User> GetUsers()
+        public static List<User> GetAllUsers()
         {
             using (var context = new AlarmClockDBContext())
             {

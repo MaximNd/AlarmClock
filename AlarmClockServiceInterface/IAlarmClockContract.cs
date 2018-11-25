@@ -15,7 +15,7 @@ namespace AlarmClockServiceInterface
         [OperationContract]
         User GetUserByGuid(Guid guid);
         [OperationContract]
-        List<User> GetAllUsers(Guid alarmClockGuid);
+        List<User> GetAllUsers();
         [OperationContract]
         void AddUser(User user);
         [OperationContract]

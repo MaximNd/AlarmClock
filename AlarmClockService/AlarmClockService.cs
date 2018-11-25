@@ -6,7 +6,7 @@ using DBModels;
 
 namespace AlarmClockService
 {
-    class AlarmCklockSimulatorService : IAlarmClockContract
+    class AlarmClockService : IAlarmClockContract
     {
         public bool UserExists(string login)
         {
@@ -22,9 +22,9 @@ namespace AlarmClockService
         {
             return EntityWrapper.GetUserByGuid(guid);
         }
-        public List<User> GetAllUsers(Guid walletGuid)
+        public List<User> GetAllUsers()
         {
-            return EntityWrapper.GetAllUsers(walletGuid);
+            return EntityWrapper.GetAllUsers();
         }
 
         public void AddUser(User user)

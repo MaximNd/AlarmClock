@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AlarmClockServiceInterface;
 using DBAdapter;
 using DBModels;
 
@@ -6,48 +7,41 @@ namespace Managers
 {
     public class DBManager
     {
-        public static List<User> Users = new List<User>();
-
-        static DBManager()
-        {
-            AddUser(new User("Petro", "Petrenko", "petro@mail.com", "test", "test"));
-            AddUser(new User("Ivan", "Ivanenko", "ivan@mail.com", "test1", "test1"));
-        }
 
         public static bool UserExists(string login)
         {
-            return EntityWrapper.UserExists(login);
+            return AlarmClockServiceWrapper.UserExists(login);
         }
 
         public static User GetUserByLogin(string login)
         {
-            return EntityWrapper.GetUserByLogin(login);
+            return AlarmClockServiceWrapper.GetUserByLogin(login);
         }
 
         public static void AddUser(User user)
         {
             if (!UserExists(user.Login))
-                EntityWrapper.AddUser(user);
+                AlarmClockServiceWrapper.AddUser(user);
         }
 
         public static List<User> GetAllUsers()
         {
-            return EntityWrapper.GetUsers();
+            return AlarmClockServiceWrapper.GetAllUsers();
         }
 
-        public static void AddAlarmClock(DBModels.AlarmClock alarmClock)
+        public static void AddAlarmClock(AlarmClock alarmClock)
         {
-            EntityWrapper.AddAlarmClock(alarmClock);
+            AlarmClockServiceWrapper.AddAlarmClock(alarmClock);
         }
 
-        public static void SaveAlarmClock(DBModels.AlarmClock alarmClock)
+        public static void SaveAlarmClock(AlarmClock alarmClock)
         {
-            EntityWrapper.SaveAlarmClock(alarmClock);
+            AlarmClockServiceWrapper.SaveAlarmClock(alarmClock);
         }
 
-        public static void DeleteAlarmClock(DBModels.AlarmClock selectedAlarmClock)
+        public static void DeleteAlarmClock(AlarmClock selectedAlarmClock)
         {
-            EntityWrapper.DeleteAlarmClock(selectedAlarmClock);
+            AlarmClockServiceWrapper.DeleteAlarmClock(selectedAlarmClock);
         }
     }
 }

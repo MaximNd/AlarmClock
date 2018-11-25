@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using Tools;
 using Tools.Serialization;
 
 namespace DBModels
 {
+    [DataContract(IsReference = true)]
     public class User
     {
         #region Const
@@ -21,14 +23,21 @@ namespace DBModels
         #endregion
 
         #region Fields
-
+        [DataMember]
         private Guid _guid;
+        [DataMember]
         private string _firstName;
+        [DataMember]
         private string _lastName;
+        [DataMember]
         private string _email;
+        [DataMember]
         private string _login;
+        [DataMember]
         private string _password;
+        [DataMember]
         private DateTime _lastLoginDate;
+        [DataMember]
         private List<AlarmClock> _alarmClocks;
 
         #endregion
