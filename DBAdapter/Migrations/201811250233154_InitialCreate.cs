@@ -12,7 +12,7 @@ namespace DBAdapter.Migrations
                 c => new
                     {
                         Guid = c.Guid(nullable: false),
-                        LastTriggerDate = c.DateTime(nullable: true),
+                        LastTriggerDate = c.DateTime(),
                         NextTriggerDate = c.DateTime(nullable: false),
                         UserGuid = c.Guid(nullable: false),
                     })
