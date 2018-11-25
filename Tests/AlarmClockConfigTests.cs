@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AlarmClock.Models;
 using AlarmClock.ViewModels.AlarmClocks.AlarmClock;
 using DBModels;
@@ -20,7 +21,6 @@ namespace Tests
         public AlarmClockConfigTests()
         {
             users = UserGenerator.GenerateUsers();
-            DBManager.Users = users;
             StationManager.CurrentUser = users[1];
         }
         #endregion
@@ -73,25 +73,6 @@ namespace Tests
         }
 
         [TestMethod]
-        public void CheckUpdatingTimeAlarmClock()
-        {
-            DateTime now = DateTime.Now;
-            AlarmClockForView alarmClockForView = new AlarmClockForView(null, now.AddMinutes(2));
-            AlarmClockViewModel alarmClockViewModel = new AlarmClockViewModel(alarmClockForView);
-
-            PrivateObject obj = new PrivateObject(alarmClockViewModel);
-            DateTime newDateTime = now.AddMinutes(4);
-            obj.Invoke("UpdateTime", newDateTime);
-
-            Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate.Year, newDateTime.Year);
-            Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate.Month, newDateTime.Month);
-            Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate.Day, newDateTime.Day);
-            Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate.Hour, newDateTime.Hour);
-            Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate.Minute, newDateTime.Minute);
-            Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.NextTriggerDate.Second, newDateTime.Second);
-        }
-
-        [TestMethod]
         public void CheckStoppingAlarmClock()
         {
             DateTime now = DateTime.Now;
@@ -102,6 +83,36 @@ namespace Tests
             obj.Invoke("SnoozeExecute", (object)null);
 
             Assert.IsFalse(alarmClockForView.IsAlarming);
+        }
+
+        [TestMethod]
+        public void TestAlarming()
+        {
+            DateTime now = DateTime.Now;
+            AlarmClockForView alarmClockForView = new AlarmClockForView(null, now);
+            AlarmClockViewModel alarmClockViewModel = new AlarmClockViewModel(alarmClockForView);
+            int beforeYear = alarmClockViewModel.CurrentAlarmClock.AlarmClock.NextTriggerDate.Year;
+            int beforeMonth = alarmClockViewModel.CurrentAlarmClock.AlarmClock.NextTriggerDate.Month;
+            int beforeDay = alarmClockViewModel.CurrentAlarmClock.AlarmClock.NextTriggerDate.Day;
+            int beforeHour = alarmClockViewModel.CurrentAlarmClock.AlarmClock.NextTriggerDate.Hour;
+            int beforeMinute = alarmClockViewModel.CurrentAlarmClock.AlarmClock.NextTriggerDate.Minute;
+            int beforeSecond = alarmClockViewModel.CurrentAlarmClock.AlarmClock.NextTriggerDate.Second;
+
+            alarmClockViewModel.CurrentAlarmClock.Alarm();
+            
+            Assert.IsTrue(alarmClockViewModel.CurrentAlarmClock.AlarmClock.IsAlarming);
+            Assert.IsNotNull(alarmClockViewModel.CurrentAlarmClock.AlarmClock.LastTriggerDate);
+            Assert.IsInstanceOfType(alarmClockViewModel.CurrentAlarmClock.AlarmClock.LastTriggerDate, typeof(DateTime));
+
+            DateTime LastTriggerDate = (DateTime) alarmClockViewModel.CurrentAlarmClock.AlarmClock.LastTriggerDate;
+
+            Assert.AreEqual(LastTriggerDate.Year, beforeYear);
+            Assert.AreEqual(LastTriggerDate.Month, beforeMonth);
+            Assert.AreEqual(LastTriggerDate.Day, beforeDay);
+            Assert.AreEqual(LastTriggerDate.Hour, beforeHour);
+            Assert.AreEqual(LastTriggerDate.Minute, beforeMinute);
+            Assert.AreEqual(LastTriggerDate.Second, beforeSecond);
+            Assert.AreEqual(alarmClockViewModel.CurrentAlarmClock.AlarmClock.NextTriggerDate, now.AddDays(1));
         }
 
         private DateTime CreateUniqueDateTime()
